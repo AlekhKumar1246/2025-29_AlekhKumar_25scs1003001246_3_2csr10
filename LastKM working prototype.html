@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LastKM — AI Matching Engine Demo</title>
+<style>
+  :root{
+    --navy:#1B1F3B;
+    --navy-light:#262B4D;
+    --forest:#3E5C4E;
+    --gold:#C9A227;
+    --card:#F3F4F1;
+    --muted:#5B6470;
+    --line:#E3E5E0;
+    --white:#FFFFFF;
+    --danger:#A6483C;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family: "Segoe UI", Arial, sans-serif; background:#FAFAF8; color:#1B1F3B;
+  }
+  h1,h2,h3{font-family: Georgia, "Cambria", serif; margin:0;}
+  header{
+    background:var(--navy); color:var(--white); padding:22px 32px; display:flex; align-items:center; gap:14px;
+  }
+  header .dot{width:14px; height:14px; border-radius:50%; background:var(--gold);}
+  header h1{font-size:26px;}
+  header p{margin:2px 0 0; font-size:13px; color:#AEB6D6;}
+  main{max-width:1180px; margin:0 auto; padding:28px 20px 60px;}
+  .grid{display:grid; grid-template-columns: 1fr 1.35fr; gap:22px;}
+  @media (max-width:880px){ .grid{grid-template-columns:1fr;} }
+  .panel{background:var(--white); border-radius:10px; padding:22px; box-shadow:0 1px 4px rgba(27,31,59,0.08);}
+  .panel h2{font-size:19px; color:var(--navy); margin-bottom:4px;}
+  .panel .sub{color:var(--muted); font-size:13px; margin-bottom:16px;}
+  label{display:block; font-size:12.5px; font-weight:600; color:var(--muted); margin:12px 0 5px;}
+  select, input{
+    width:100%; padding:9px 10px; border-radius:6px; border:1px solid var(--line); font-size:14px; font-family:inherit; background:#fff;
+  }
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  button.primary{
+    margin-top:18px; width:100%; background:var(--gold); color:var(--navy); border:none; border-radius:7px;
+    padding:12px; font-size:14.5px; font-weight:700; cursor:pointer; font-family:inherit;
+  }
+  button.primary:hover{filter:brightness(0.95);}
+  button.ghost{
+    background:transparent; border:1px solid var(--line); color:var(--navy); padding:8px 12px; border-radius:6px;
+    font-size:12.5px; cursor:pointer; font-family:inherit;
+  }
+  .req-card{
+    border:1px solid var(--line); border-radius:9px; padding:14px 16px; margin-bottom:12px; transition:box-shadow .2s;
+  }
+  .req-card .top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .req-card h3{font-size:15px;}
+  .req-card .meta{font-size:12.5px; color:var(--muted); margin-top:4px; line-height:1.5;}
+  .badge{font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:20px; white-space:nowrap;}
+  .badge.match{background:#E4EEE7; color:var(--forest);}
+  .badge.nomatch{background:#F3E5E3; color:var(--danger);}
+  .badge.pending{background:#F0F0EC; color:var(--muted);}
+  .breakdown{
+    margin-top:10px; background:var(--card); border-radius:7px; padding:10px 12px; font-size:12.5px; color:#333; display:none;
+  }
+  .breakdown.show{display:block;}
+  .breakdown .line{display:flex; justify-content:space-between; padding:2px 0;}
+  .breakdown .line.total{font-weight:700; border-top:1px dashed var(--line); margin-top:5px; padding-top:6px;}
+  .req-card .actions{margin-top:10px; display:flex; gap:10px;}
+  .accept-btn{
+    background:var(--forest); color:#fff; border:none; padding:7px 14px; border-radius:6px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+  }
+  .accept-btn:disabled{background:#B9C2BC; cursor:not-allowed;}
+
+  /* Tracking view */
+  #trackingModal{
+    display:none; position:fixed; inset:0; background:rgba(27,31,59,0.55); align-items:center; justify-content:center; z-index:50; padding:16px;
+  }
+  #trackingModal.show{display:flex;}
+  .track-box{
+    background:var(--navy); color:#fff; border-radius:12px; padding:30px; width:100%; max-width:560px;
+  }
+  .track-box h2{color:#fff; font-size:20px;}
+  .route-line{position:relative; height:70px; margin:34px 10px 10px;}
+  .route-track{position:absolute; top:50%; left:0; right:0; height:2px; background:#3C4370;}
+  .pin{
+    position:absolute; top:50%; transform:translate(-50%,-50%); width:34px; height:34px; border-radius:50%;
+    background:var(--gold); display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--navy);
+  }
+  .truck{
+    position:absolute; top:50%; transform:translate(-50%,-50%); width:42px; height:42px; border-radius:50%;
+    background:var(--forest); display:flex; align-items:center; justify-content:center; font-size:19px; left:6%;
+    transition: left 6s linear;
+  }
+  .track-labels{display:flex; justify-content:space-between; font-size:12px; color:#C7CCE4; margin-top:6px;}
+  .eta{margin-top:22px; background:var(--gold); color:var(--navy); border-radius:8px; padding:12px; text-align:center; font-weight:700;}
+  .rating{margin-top:20px; text-align:center; display:none;}
+  .rating.show{display:block;}
+  .stars span{font-size:26px; color:#454B72; cursor:pointer; margin:0 3px;}
+  .stars span.active{color:var(--gold);}
+  .closeTrack{margin-top:18px; width:100%; background:transparent; border:1px solid #454B72; color:#fff; padding:10px; border-radius:7px; cursor:pointer; font-family:inherit; display:none;}
+  .closeTrack.show{display:block;}
+  .summary{margin-top:14px; font-size:13px; color:#D7DBEA; line-height:1.6; display:none;}
+  .summary.show{display:block;}
+  .footnote{margin-top:26px; font-size:12px; color:var(--muted); text-align:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="dot"></div>
+  <div>
+    <h1>LastKM</h1>
+    <p>AI-Powered Backhaul Matching — Live Matching Engine Demo</p>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <!-- LEFT: Driver setup -->
+    <div class="panel">
+      <h2>1 · Register Your Route</h2>
+      <div class="sub">You're a delivery driver heading back with an empty vehicle.</div>
+
+      <label>Start Sector</label>
+      <select id="startSector"></select>
+
+      <label>End Sector</label>
+      <select id="endSector"></select>
+
+      <label>Available Space</label>
+      <select id="capacity">
+        <option value="1">1 small box</option>
+        <option value="2" selected>2 small boxes</option>
+        <option value="3">3 small boxes</option>
+        <option value="5">A crate (5 boxes)</option>
+      </select>
+
+      <div class="row2">
+        <div>
+          <label>Window Start</label>
+          <input type="time" id="winStart" value="18:00">
+        </div>
+        <div>
+          <label>Window End</label>
+          <input type="time" id="winEnd" value="18:45">
+        </div>
+      </div>
+
+      <button class="primary" onclick="runMatching()">Scan for Matches</button>
+      <div class="footnote">AI checks route overlap, capacity fit, and time window — same logic as the prototype's matching engine.</div>
+    </div>
+
+    <!-- RIGHT: Requests -->
+    <div class="panel">
+      <h2>2 · Nearby Community Requests</h2>
+      <div class="sub">Real requests from students, shopkeepers, and NGOs along nearby routes.</div>
+      <div id="requestList"></div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Tracking Modal -->
+<div id="trackingModal">
+  <div class="track-box">
+    <h2 id="trackTitle">Live Tracking</h2>
+    <div class="route-line">
+      <div class="route-track"></div>
+      <div class="pin" style="left:6%;">📍</div>
+      <div class="pin" style="left:94%;">📍</div>
+      <div class="truck" id="truckIcon">🚚</div>
+    </div>
+    <div class="track-labels">
+      <span id="pickupLabel">Pickup</span>
+      <span id="dropLabel">Drop</span>
+    </div>
+    <div class="eta" id="etaBox">ETA 8 min — receiver notified</div>
+
+    <div class="rating" id="ratingBox">
+      <p style="margin:0 0 8px;">Delivery complete! Rate the trip:</p>
+      <div class="stars" id="stars">
+        <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+      </div>
+    </div>
+
+    <div class="summary" id="summaryBox"></div>
+
+    <button class="closeTrack" id="closeTrackBtn" onclick="closeTracking()">Close</button>
+  </div>
+</div>
+
+<script>
+  const SECTORS = Array.from({length:14}, (_,i)=>10+i); // Sector 10 - 23
+  function fillSelect(id, defaultVal){
+    const sel = document.getElementById(id);
+    SECTORS.forEach(s=>{
+      const o = document.createElement('option');
+      o.value=s; o.textContent="Sector "+s;
+      if(s===defaultVal) o.selected=true;
+      sel.appendChild(o);
+    });
+  }
+  fillSelect('startSector', 12);
+  fillSelect('endSector', 19);
+
+  // Sample community requests (pickup, drop sector, size needed, time window, description)
+  const REQUESTS = [
+    { id:1, name:"Priya (Student)", type:"Textbooks parcel", pickup:15, drop:17, size:1, tStart:"17:45", tEnd:"18:30" },
+    { id:2, name:"Sharma Kirana Store", type:"Grocery restock crate", pickup:13, drop:14, size:2, tStart:"18:00", tEnd:"18:40" },
+    { id:3, name:"Hope NGO Center", type:"Donated clothes box", pickup:18, drop:21, size:3, tStart:"18:10", tEnd:"19:00" },
+    { id:4, name:"Aman (Shopkeeper)", type:"Stationery cartons", pickup:16, drop:20, size:5, tStart:"19:00", tEnd:"19:30" },
+    { id:5, name:"Riya (Student)", type:"Laundry bag", pickup:11, drop:13, size:1, tStart:"18:00", tEnd:"18:20" },
+  ];
+
+  function renderRequests(){
+    const list = document.getElementById('requestList');
+    list.innerHTML = "";
+    REQUESTS.forEach(r=>{
+      const div = document.createElement('div');
+      div.className = 'req-card';
+      div.id = 'req-'+r.id;
+      div.innerHTML = `
+        <div class="top">
+          <div>
+            <h3>${r.name}</h3>
+            <div class="meta">${r.type}<br>Sector ${r.pickup} → Sector ${r.drop} &nbsp;•&nbsp; needs ${r.size} box(es)<br>Window: ${r.tStart}–${r.tEnd}</div>
+          </div>
+          <span class="badge pending" id="badge-${r.id}">Not scanned</span>
+        </div>
+        <div class="breakdown" id="breakdown-${r.id}"></div>
+        <div class="actions">
+          <button class="accept-btn" id="accept-${r.id}" disabled onclick="acceptMatch(${r.id})">Accept Match</button>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+  renderRequests();
+
+  function timeToMin(t){ const [h,m]=t.split(':').map(Number); return h*60+m; }
+
+  function runMatching(){
+    const start = parseInt(document.getElementById('startSector').value);
+    const end = parseInt(document.getElementById('endSector').value);
+    const capacity = parseInt(document.getElementById('capacity').value);
+    const winStart = timeToMin(document.getElementById('winStart').value);
+    const winEnd = timeToMin(document.getElementById('winEnd').value);
+    const lo = Math.min(start,end), hi = Math.max(start,end);
+
+    REQUESTS.forEach(r=>{
+      const badge = document.getElementById('badge-'+r.id);
+      const breakdown = document.getElementById('breakdown-'+r.id);
+      const acceptBtn = document.getElementById('accept-'+r.id);
+
+      const routeFit = r.pickup>=lo && r.pickup<=hi && r.drop>=lo && r.drop<=hi;
+      const capacityFit = r.size <= capacity;
+      const rStart = timeToMin(r.tStart), rEnd = timeToMin(r.tEnd);
+      const timeFit = rStart <= winEnd && rEnd >= winStart;
+
+      const isMatch = routeFit && capacityFit && timeFit;
+      const distance = Math.abs(r.drop - r.pickup);
+      const dedicated = 60 + distance*20;
+      const lastkm = Math.round(dedicated*0.62/5)*5;
+      const margin = Math.round(lastkm*0.18);
+      const base = lastkm - margin;
+
+      if(isMatch){
+        badge.textContent = "✅ Matched";
+        badge.className = "badge match";
+        acceptBtn.disabled = false;
+        breakdown.className = "breakdown show";
+        breakdown.innerHTML = `
+          <div class="line"><span>Route check</span><span>✔ within Sector ${lo}–${hi}</span></div>
+          <div class="line"><span>Capacity check</span><span>✔ ${r.size} of ${capacity} boxes used</span></div>
+          <div class="line"><span>Time window check</span><span>✔ overlaps ${document.getElementById('winStart').value}–${document.getElementById('winEnd').value}</span></div>
+          <div class="line"><span>Base fuel + time cost</span><span>₹${base}</span></div>
+          <div class="line"><span>Incentive margin</span><span>₹${margin}</span></div>
+          <div class="line total"><span>Suggested price</span><span>₹${lastkm} (vs ₹${dedicated} dedicated)</span></div>
+        `;
+      } else {
+        badge.textContent = "✕ No fit";
+        badge.className = "badge nomatch";
+        acceptBtn.disabled = true;
+        let reasons = [];
+        if(!routeFit) reasons.push("outside your route range");
+        if(!capacityFit) reasons.push("needs more space than available");
+        if(!timeFit) reasons.push("time window doesn't overlap");
+        breakdown.className = "breakdown show";
+        breakdown.innerHTML = `<div class="line"><span>Why it didn't match</span><span>${reasons.join(", ")}</span></div>`;
+      }
+    });
+  }
+
+  let currentReq = null;
+  function acceptMatch(id){
+    currentReq = REQUESTS.find(r=>r.id===id);
+    document.getElementById('trackTitle').textContent = "Live Tracking — " + currentReq.name;
+    document.getElementById('pickupLabel').textContent = "Pickup: Sector " + currentReq.pickup;
+    document.getElementById('dropLabel').textContent = "Drop: Sector " + currentReq.drop;
+    document.getElementById('etaBox').textContent = "ETA 8 min — receiver notified";
+    document.getElementById('ratingBox').className = "rating";
+    document.getElementById('summaryBox').className = "summary";
+    document.getElementById('closeTrackBtn').className = "closeTrack";
+    document.querySelectorAll('#stars span').forEach(s=>s.classList.remove('active'));
+
+    const truck = document.getElementById('truckIcon');
+    truck.style.transition = 'none';
+    truck.style.left = '6%';
+    document.getElementById('trackingModal').classList.add('show');
+
+    setTimeout(()=>{
+      truck.style.transition = 'left 6s linear';
+      truck.style.left = '94%';
+    }, 50);
+
+    let secondsLeft = 8;
+    const etaBox = document.getElementById('etaBox');
+    const etaTimer = setInterval(()=>{
+      secondsLeft -= 2;
+      if(secondsLeft > 0){
+        etaBox.textContent = "ETA " + secondsLeft + " min — receiver notified";
+      } else {
+        etaBox.textContent = "Delivered ✔";
+        clearInterval(etaTimer);
+        document.getElementById('ratingBox').className = "rating show";
+      }
+    }, 1500);
+  }
+
+  document.getElementById('stars').addEventListener('click', (e)=>{
+    if(e.target.tagName !== 'SPAN') return;
+    const v = parseInt(e.target.dataset.v);
+    document.querySelectorAll('#stars span').forEach(s=>{
+      s.classList.toggle('active', parseInt(s.dataset.v) <= v);
+    });
+    setTimeout(()=>{
+      const distance = Math.abs(currentReq.drop - currentReq.pickup);
+      const dedicated = 60 + distance*20;
+      const lastkm = Math.round(dedicated*0.62/5)*5;
+      const saved = dedicated - lastkm;
+      const summary = document.getElementById('summaryBox');
+      summary.className = "summary show";
+      summary.innerHTML = `Thanks for rating! <br>Driver earned <b>₹${lastkm}</b> on a leg that would otherwise have been empty.<br>${currentReq.name} saved <b>₹${saved}</b> versus a dedicated delivery.`;
+      document.getElementById('closeTrackBtn').className = "closeTrack show";
+    }, 400);
+  });
+
+  function closeTracking(){
+    document.getElementById('trackingModal').classList.remove('show');
+    if(currentReq){
+      const badge = document.getElementById('badge-'+currentReq.id);
+      badge.textContent = "🚚 Delivered";
+      badge.className = "badge match";
+      document.getElementById('accept-'+currentReq.id).disabled = true;
+      document.getElementById('accept-'+currentReq.id).textContent = "Completed";
+    }
+  }
+</script>
+
+</body>
+</html>
