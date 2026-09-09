@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LastKM | Shared Delivery Capacity</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <!-- Navigation -->
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+            <div class="logo-mark">LK</div>
+            <span>LastKM</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="#how-it-works">How it works</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <button class="nav-button" id="navGetStarted">
+            Get Started
+        </button>
+
+    </header>
+
+
+    <!-- Hero -->
+    <main class="hero">
+
+        <section class="hero-left">
+
+            <div class="availability">
+                <span class="live-dot"></span>
+                Smart delivery matching
+            </div>
+
+            <h1>
+                Make every
+                <span>trip count.</span>
+            </h1>
+
+            <p class="hero-text">
+                LastKM connects shipments with unused space on vehicles
+                already heading that way — making delivery more affordable,
+                efficient and sustainable.
+            </p>
+
+            <div class="hero-actions">
+
+                <button class="primary-btn" id="getStartedBtn">
+                    <span>Get Started</span>
+                    <span class="arrow">→</span>
+                </button>
+
+                <a href="#how-it-works" class="secondary-btn">
+                    See how it works
+                    <span>↓</span>
+                </a>
+
+            </div>
+
+            <div class="quick-points">
+
+                <div>
+                    <span class="point-icon">✓</span>
+                    Lower delivery cost
+                </div>
+
+                <div>
+                    <span class="point-icon">✓</span>
+                    Better vehicle utilization
+                </div>
+
+                <div>
+                    <span class="point-icon">✓</span>
+                    Smarter matching
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Hero Visual -->
+        <section class="hero-right">
+
+            <div class="visual-circle circle-large"></div>
+            <div class="visual-circle circle-small"></div>
+
+            <!-- Route card -->
+            <div class="floating-card route-card">
+
+                <div class="card-label">
+                    AVAILABLE CAPACITY
+                </div>
+
+                <div class="route">
+
+                    <div class="place">
+                        <span class="route-dot pickup"></span>
+                        <div>
+                            <small>From</small>
+                            <strong>Sector 12</strong>
+                        </div>
+                    </div>
+
+                    <div class="route-line"></div>
+
+                    <div class="place">
+                        <span class="route-dot destination"></span>
+                        <div>
+                            <small>To</small>
+                            <strong>Sector 15</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="route-footer">
+                    <span>Today · 6:00 PM</span>
+                    <b>2 boxes available</b>
+                </div>
+
+            </div>
+
+
+            <!-- Truck -->
+            <div class="truck-scene">
+
+                <div class="road"></div>
+
+                <div class="truck">
+
+                    <div class="truck-box">
+                        <div class="box-logo">LK</div>
+
+                        <div class="box-copy">
+                            <strong>LastKM</strong>
+                            <span>SHARED SPACE</span>
+                        </div>
+                    </div>
+
+                    <div class="truck-cabin">
+
+                        <div class="window"></div>
+                        <div class="window-side"></div>
+
+                        <div class="light"></div>
+
+                    </div>
+
+                    <div class="truck-wheel wheel-1">
+                        <span></span>
+                    </div>
+
+                    <div class="truck-wheel wheel-2">
+                        <span></span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- AI match card -->
+            <div class="floating-card match-card">
+
+                <div class="match-top">
+
+                    <div class="ai-symbol">✦</div>
+
+                    <div>
+                        <small>AI MATCH</small>
+                        <strong>Shipment matched</strong>
+                    </div>
+
+                </div>
+
+                <div class="match-score">
+
+                    <div class="score">
+                        94%
+                    </div>
+
+                    <div class="score-copy">
+                        <strong>Excellent match</strong>
+                        <span>Route · Time · Capacity</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Savings card -->
+            <div class="floating-card saving-card">
+
+                <div class="saving-icon">↗</div>
+
+                <div>
+                    <small>SMARTER DELIVERY</small>
+                    <strong>Use capacity already on the road</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- How it works -->
+    <section class="how-section" id="how-it-works">
+
+        <div class="section-heading">
+            <span>HOW IT WORKS</span>
+            <h2>One trip. More value.</h2>
+            <p>
+                LastKM helps connect people who need to move eligible
+                shipments with vehicles that already have available space.
+            </p>
+        </div>
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="step-number">01</div>
+                <h3>Add your shipment</h3>
+                <p>
+                    Tell us where your package needs to go,
+                    along with its size and preferred time.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">02</div>
+                <h3>AI finds a match</h3>
+                <p>
+                    LastKM evaluates route, timing, capacity
+                    and package compatibility.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">03</div>
+                <h3>Move it together</h3>
+                <p>
+                    Confirm the match and use an existing journey
+                    instead of arranging another dedicated trip.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Minimal sustainability information -->
+    <section class="about-section" id="about">
+
+        <div>
+            <span class="section-tag">BUILT FOR BETTER CITIES</span>
+
+            <h2>
+                Smarter logistics,
+                <span>less wasted capacity.</span>
+            </h2>
+        </div>
+
+        <p>
+            LastKM is designed around shared vehicle capacity:
+            helping senders access affordable transport while
+            helping drivers make better use of journeys they are
+            already making.
+        </p>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <div class="footer-brand">
+            <div class="logo-mark">LK</div>
+            <strong>LastKM</strong>
+        </div>
+
+        <span>
+            AI-powered shared transportation
+        </span>
+
+        <div class="sdg-mini">
+            <span>SDG 11</span>
+            <span>SDG 12</span>
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

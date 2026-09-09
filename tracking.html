@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LastKM — Live Tracking</title>
+
+    <link rel="stylesheet" href="tracking.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="brand">
+            <div class="brand-icon">LK</div>
+
+            <div>
+                <div class="brand-name">LastKM</div>
+                <div class="brand-subtitle">Smart backhaul delivery</div>
+            </div>
+        </div>
+
+        <div class="nav-center">
+            <span>Step 7 of 9</span>
+        </div>
+
+        <button class="home-btn" id="homeBtn">
+            Home
+        </button>
+
+    </nav>
+
+
+    <!-- MAIN -->
+    <main class="tracking-page">
+
+        <!-- HEADER -->
+        <section class="page-header">
+
+            <div>
+                <div class="eyebrow">
+                    <span class="live-dot"></span>
+                    LIVE TRACKING
+                </div>
+
+                <h1>Your package is on the way.</h1>
+
+                <p>
+                    Follow your matched vehicle and track your delivery in real time.
+                </p>
+            </div>
+
+            <div class="delivery-status">
+                <span class="status-dot"></span>
+                <span id="statusText">In transit</span>
+            </div>
+
+        </section>
+
+
+        <!-- TRACKING LAYOUT -->
+        <section class="tracking-layout">
+
+            <!-- MAP -->
+            <div class="map-card">
+
+                <div class="map-top">
+
+                    <div>
+                        <span class="map-label">CURRENT ROUTE</span>
+                        <h2 id="routeTitle">
+                            Pickup → Destination
+                        </h2>
+                    </div>
+
+                    <div class="eta-box">
+                        <span>Estimated arrival</span>
+                        <strong id="etaText">12 min</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- MAP AREA -->
+                <div class="fake-map">
+
+                    <div class="map-grid"></div>
+
+                    <!-- Roads -->
+                    <div class="road road-one"></div>
+                    <div class="road road-two"></div>
+                    <div class="road road-three"></div>
+
+                    <!-- Route -->
+                    <div class="route-line"></div>
+
+                    <!-- Pickup -->
+                    <div class="map-point pickup-point">
+                        <div class="point-pulse"></div>
+                        <div class="point-pin">A</div>
+
+                        <div class="point-label">
+                            <strong>Pickup</strong>
+                            <span id="pickupMap">Origin</span>
+                        </div>
+                    </div>
+
+
+                    <!-- Moving Vehicle -->
+                    <div class="vehicle-marker" id="vehicleMarker">
+
+                        <div class="vehicle-shadow"></div>
+
+                        <div class="truck">
+                            🚚
+                        </div>
+
+                    </div>
+
+
+                    <!-- Destination -->
+                    <div class="map-point destination-point">
+
+                        <div class="destination-pin">B</div>
+
+                        <div class="point-label destination-label">
+                            <strong>Destination</strong>
+                            <span id="destinationMap">Destination</span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Floating location -->
+                    <div class="location-badge">
+                        <span class="location-icon">●</span>
+                        Driver location updating
+                    </div>
+
+                </div>
+
+
+                <!-- MAP FOOTER -->
+                <div class="map-footer">
+
+                    <div class="route-info">
+                        <div class="route-icon">↗</div>
+
+                        <div>
+                            <span>Route</span>
+                            <strong id="routeDistance">
+                                Active delivery route
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="updated">
+                        <span class="update-dot"></span>
+                        Updated just now
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SIDE PANEL -->
+            <aside class="side-panel">
+
+                <!-- VEHICLE CARD -->
+                <div class="info-card vehicle-card">
+
+                    <div class="card-heading">
+
+                        <div>
+                            <span class="small-label">
+                                YOUR VEHICLE
+                            </span>
+
+                            <h3 id="vehicleName">
+                                Sharma Logistics
+                            </h3>
+                        </div>
+
+                        <div class="verified-badge">
+                            ✓ Verified
+                        </div>
+
+                    </div>
+
+
+                    <div class="vehicle-details">
+
+                        <div class="vehicle-visual">
+                            🚚
+                        </div>
+
+                        <div class="vehicle-info">
+
+                            <strong id="vehicleType">
+                                Mini Truck
+                            </strong>
+
+                            <span id="vehicleId">
+                                Vehicle LK-104
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="driver-row">
+
+                        <div class="driver-avatar">
+                            S
+                        </div>
+
+                        <div>
+                            <strong>Driver</strong>
+                            <span id="driverName">
+                                Sharma Logistics
+                            </span>
+                        </div>
+
+                        <div class="rating">
+                            ★ 4.8
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PACKAGE STATUS -->
+                <div class="info-card">
+
+                    <div class="small-label">
+                        DELIVERY STATUS
+                    </div>
+
+                    <div class="progress-wrapper">
+
+                        <div class="progress-line">
+
+                            <div class="progress-fill"
+                                 id="progressFill">
+                            </div>
+
+                        </div>
+
+                        <div class="progress-steps">
+
+                            <div class="step active">
+                                <div class="step-circle">✓</div>
+                                <span>Picked up</span>
+                            </div>
+
+                            <div class="step active">
+                                <div class="step-circle">✓</div>
+                                <span>In transit</span>
+                            </div>
+
+                            <div class="step" id="nearbyStep">
+                                <div class="step-circle">3</div>
+                                <span>Nearby</span>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-circle">4</div>
+                                <span>Delivered</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PACKAGE -->
+                <div class="info-card package-card">
+
+                    <div class="small-label">
+                        PACKAGE
+                    </div>
+
+                    <div class="package-row">
+
+                        <div class="package-icon">
+                            📦
+                        </div>
+
+                        <div>
+
+                            <strong id="packageType">
+                                Package
+                            </strong>
+
+                            <span id="packageWeight">
+                                5 kg
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- IMPACT -->
+                <div class="impact-card">
+
+                    <div class="impact-icon">
+                        🌱
+                    </div>
+
+                    <div>
+
+                        <strong>Better use of an existing trip</strong>
+
+                        <p>
+                            Your package is using unused vehicle capacity
+                            instead of requiring another dedicated delivery
+                            journey.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTION -->
+                <button class="complete-btn" id="completeBtn">
+
+                    <span>Delivery Complete</span>
+
+                    <span class="arrow">→</span>
+
+                </button>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+
+    <script src="tracking.js"></script>
+
+</body>
+</html>

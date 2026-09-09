@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Vehicle Matching — LastKM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="matching.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- BACKGROUND -->
+
+<div class="bg-glow glow-one"></div>
+<div class="bg-glow glow-two"></div>
+
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+    <a
+        href="index.html"
+        class="brand"
+    >
+
+        <div class="brand-logo">
+            LK
+        </div>
+
+        <div class="brand-copy">
+
+            <strong>
+                LastKM
+            </strong>
+
+            <span>
+                Smarter routes. Better use.
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <div class="progress">
+
+        <span>
+            Step 5 of 10
+        </span>
+
+        <div class="progress-track">
+
+            <div class="progress-fill"></div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- MAIN -->
+
+<main class="main-container">
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div>
+
+            <div class="eyebrow">
+
+                <span class="eyebrow-dot"></span>
+
+                AI MATCHING ENGINE
+
+            </div>
+
+
+            <h1>
+
+                Finding the best
+                <span>vehicle match.</span>
+
+            </h1>
+
+
+            <p>
+
+                LastKM is comparing available vehicle capacity
+                with your route, package and delivery time.
+
+            </p>
+
+        </div>
+
+
+        <div class="ai-orb">
+
+            <div class="ai-ring ring-one"></div>
+            <div class="ai-ring ring-two"></div>
+
+            <div class="ai-core">
+
+                <span>✦</span>
+
+                <small>
+                    AI
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- SHIPMENT SUMMARY -->
+
+    <section class="shipment-summary">
+
+        <div class="summary-title">
+            YOUR SHIPMENT
+        </div>
+
+
+        <div class="summary-grid">
+
+
+            <div class="summary-item">
+
+                <div class="summary-icon">
+                    A
+                </div>
+
+                <div>
+
+                    <span>
+                        Pickup
+                    </span>
+
+                    <strong id="pickupValue">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-arrow">
+                →
+            </div>
+
+
+            <div class="summary-item">
+
+                <div class="summary-icon">
+                    B
+                </div>
+
+                <div>
+
+                    <span>
+                        Destination
+                    </span>
+
+                    <strong id="destinationValue">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-item">
+
+                <div class="summary-icon">
+                    ◇
+                </div>
+
+                <div>
+
+                    <span>
+                        Package
+                    </span>
+
+                    <strong id="packageValue">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <div class="summary-icon">
+                    kg
+                </div>
+
+                <div>
+
+                    <span>
+                        Weight
+                    </span>
+
+                    <strong id="weightValue">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <div class="summary-icon">
+                    ◷
+                </div>
+
+                <div>
+
+                    <span>
+                        Delivery
+                    </span>
+
+                    <strong id="timeValue">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- MATCHING STATUS -->
+
+    <section class="matching-status">
+
+        <div class="status-left">
+
+            <div class="status-icon">
+
+                <span></span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Matching complete
+                </strong>
+
+                <p id="statusText">
+                    Finding suitable vehicles for your shipment.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="analyzed">
+
+            <strong>
+                5
+            </strong>
+
+            vehicles analyzed
+
+        </div>
+
+    </section>
+
+
+
+    <!-- MATCH TITLE -->
+
+    <section class="matches-heading">
+
+        <div>
+
+            <h2>
+                Recommended matches
+            </h2>
+
+            <p>
+                Ranked by route, capacity, timing and package compatibility.
+            </p>
+
+        </div>
+
+
+        <div class="best-label">
+            BEST MATCH
+        </div>
+
+    </section>
+
+
+
+    <!-- MATCH CARDS -->
+
+    <section
+        class="matches-grid"
+        id="matchesGrid"
+    >
+
+        <!-- JavaScript inserts cards -->
+
+    </section>
+
+
+
+    <!-- AI EXPLANATION -->
+
+    <section
+        class="ai-explanation"
+        id="aiExplanation"
+    >
+
+        <div class="explanation-icon">
+            ✦
+        </div>
+
+        <div class="explanation-content">
+
+            <span>
+                AI MATCH EXPLANATION
+            </span>
+
+            <p id="explanationText">
+                The AI recommendation will appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ACTIONS -->
+
+    <div class="bottom-actions">
+
+        <button
+            class="back-button"
+            id="backButton"
+        >
+            ← Back
+        </button>
+
+
+        <button
+            class="continue-button"
+            id="continueButton"
+        >
+
+            <span>
+                Continue with match
+            </span>
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+    </div>
+
+
+
+    <button
+        class="back-home"
+        id="homeButton"
+    >
+
+        ←
+        <span>
+            Back to home
+        </span>
+
+    </button>
+
+
+</main>
+
+
+
+<script src="matching.js"></script>
+
+</body>
+
+</html>

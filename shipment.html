@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Shipment Details — LastKM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="shipment.css"
+    >
+</head>
+
+
+<body>
+
+<div class="bg-glow glow-one"></div>
+<div class="bg-glow glow-two"></div>
+
+
+<header class="navbar">
+
+    <a
+        href="index.html"
+        class="brand"
+    >
+
+        <div class="brand-logo">
+            LK
+        </div>
+
+        <span>
+            LastKM
+        </span>
+
+    </a>
+
+
+    <div class="progress">
+
+        <span class="progress-text">
+            Step 2 of 10
+        </span>
+
+        <div class="progress-line">
+
+            <span class="completed"></span>
+            <span class="progress-active"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="main-container">
+
+
+    <section class="page-heading">
+
+        <div class="heading-label">
+            SHIPMENT DETAILS
+        </div>
+
+        <h1>
+            Tell us about your
+            <span>package.</span>
+        </h1>
+
+        <p>
+            Add the pickup, destination and package details.
+            LastKM will use this information to find compatible
+            vehicle capacity.
+        </p>
+
+    </section>
+
+
+
+    <section class="shipment-layout">
+
+
+        <!-- =========================
+             LEFT FORM
+        ========================== -->
+
+        <div class="form-card">
+
+
+            <div class="card-header">
+
+                <div>
+
+                    <span class="section-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Route details
+                        </h2>
+
+                        <p>
+                            Where does your package need to go?
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 PICKUP / DESTINATION
+            ========================== -->
+
+            <div class="route-fields">
+
+
+                <!-- PICKUP -->
+
+                <div class="field location-field">
+
+                    <label for="pickup">
+                        Pickup location
+                    </label>
+
+
+                    <div class="input-wrapper location-input-wrapper">
+
+                        <span class="location-dot pickup-dot"></span>
+
+
+                        <input
+                            type="text"
+                            id="pickup"
+                            autocomplete="off"
+                            placeholder="Search pickup location"
+                        >
+
+
+                        <button
+                            type="button"
+                            class="location-button"
+                            id="pickupCurrentButton"
+                            title="Use current location"
+                        >
+                            ⌖
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="location-hint"
+                        id="pickupHint"
+                    >
+                        Search and select a location
+                    </div>
+
+
+                    <div
+                        class="location-results"
+                        id="pickupResults"
+                    ></div>
+
+                </div>
+
+
+
+                <div class="route-line"></div>
+
+
+
+                <!-- DESTINATION -->
+
+                <div class="field location-field">
+
+                    <label for="destination">
+                        Destination
+                    </label>
+
+
+                    <div class="input-wrapper location-input-wrapper">
+
+                        <span class="location-dot destination-dot"></span>
+
+
+                        <input
+                            type="text"
+                            id="destination"
+                            autocomplete="off"
+                            placeholder="Search destination"
+                        >
+
+
+                        <button
+                            type="button"
+                            class="location-button"
+                            id="destinationCurrentButton"
+                            title="Use current location"
+                        >
+                            ⌖
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="location-hint"
+                        id="destinationHint"
+                    >
+                        Search and select a location
+                    </div>
+
+
+                    <div
+                        class="location-results"
+                        id="destinationResults"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="divider"></div>
+
+
+
+            <!-- =========================
+                 PACKAGE DETAILS
+            ========================== -->
+
+            <div class="card-header second-header">
+
+                <div>
+
+                    <span class="section-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Package details
+                        </h2>
+
+                        <p>
+                            Help us understand what you're sending.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label for="packageType">
+                        Package type
+                    </label>
+
+
+                    <div class="select-wrapper">
+
+                        <select id="packageType">
+
+                            <option value="">
+                                Select package type
+                            </option>
+
+                            <option value="small-box">
+                                Small Box
+                            </option>
+
+                            <option value="medium-box">
+                                Medium Box
+                            </option>
+
+                            <option value="large-box">
+                                Large Box
+                            </option>
+
+                            <option value="documents">
+                                Documents
+                            </option>
+
+                            <option value="groceries">
+                                Groceries
+                            </option>
+
+                            <option value="clothing">
+                                Clothing
+                            </option>
+
+                            <option value="electronics">
+                                Electronics
+                            </option>
+
+                            <option value="other">
+                                Other eligible item
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="field">
+
+                    <label for="weight">
+                        Weight
+                    </label>
+
+
+                    <div class="input-wrapper unit-input">
+
+                        <input
+                            type="number"
+                            id="weight"
+                            min="0.1"
+                            step="0.1"
+                            placeholder="e.g. 2"
+                        >
+
+                        <span>
+                            kg
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="field">
+
+                    <label for="length">
+                        Length
+                    </label>
+
+
+                    <div class="input-wrapper unit-input">
+
+                        <input
+                            type="number"
+                            id="length"
+                            min="1"
+                            placeholder="30"
+                        >
+
+                        <span>
+                            cm
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="field">
+
+                    <label for="width">
+                        Width
+                    </label>
+
+
+                    <div class="input-wrapper unit-input">
+
+                        <input
+                            type="number"
+                            id="width"
+                            min="1"
+                            placeholder="20"
+                        >
+
+                        <span>
+                            cm
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="field">
+
+                    <label for="height">
+                        Height
+                    </label>
+
+
+                    <div class="input-wrapper unit-input">
+
+                        <input
+                            type="number"
+                            id="height"
+                            min="1"
+                            placeholder="15"
+                        >
+
+                        <span>
+                            cm
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="field">
+
+                    <label for="time">
+                        Preferred delivery time
+                    </label>
+
+
+                    <div class="select-wrapper">
+
+                        <select id="time">
+
+                            <option value="">
+                                Select time
+                            </option>
+
+                            <option value="current">
+                                ⚡ Current — ASAP
+                            </option>
+
+                            <option value="morning">
+                                9:00 AM – 12:00 PM
+                            </option>
+
+                            <option value="afternoon">
+                                12:00 PM – 3:00 PM
+                            </option>
+
+                            <option value="evening">
+                                3:00 PM – 6:00 PM
+                            </option>
+
+                            <option value="late-evening">
+                                6:00 PM – 9:00 PM
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="eligibility-note">
+
+                <div class="note-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Eligible shipments only
+                    </strong>
+
+                    <p>
+                        Small/medium, non-perishable and
+                        non-restricted items are currently supported.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="form-actions">
+
+                <button
+                    class="back-button"
+                    id="backButton"
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    class="continue-button"
+                    id="continueButton"
+                >
+
+                    <span>
+                        Find vehicle matches
+                    </span>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+
+
+            <div
+                class="error-message"
+                id="errorMessage"
+            ></div>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             RIGHT VISUAL
+        ========================== -->
+
+        <aside class="visual-card">
+
+            <div class="visual-label">
+                YOUR SHIPMENT
+            </div>
+
+
+            <div class="package-illustration">
+
+                <div class="soft-circle"></div>
+
+                <div class="big-box">
+
+                    <div class="box-tape"></div>
+
+                    <div class="box-arrow">
+                        ↑
+                    </div>
+
+                    <div class="box-arrow second-arrow">
+                        ↑
+                    </div>
+
+                </div>
+
+
+                <div class="small-box">
+
+                    <div class="box-tape"></div>
+
+                </div>
+
+
+                <div class="floating-dot dot-one"></div>
+                <div class="floating-dot dot-two"></div>
+                <div class="floating-dot dot-three"></div>
+
+            </div>
+
+
+
+            <div class="visual-bottom">
+
+                <div class="ai-badge">
+
+                    <span class="ai-dot"></span>
+
+                    AI MATCHING
+
+                </div>
+
+
+                <h3>
+                    We'll find space
+                    that's already on the road.
+                </h3>
+
+
+                <p>
+                    Your shipment can travel with a compatible
+                    existing journey instead of requiring a
+                    separate trip.
+                </p>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+
+
+    <button
+        class="back-home"
+        id="homeButton"
+    >
+        ←
+        <span>
+            Back to home
+        </span>
+    </button>
+
+
+</main>
+
+
+
+<script src="shipment.js"></script>
+
+</body>
+
+</html>

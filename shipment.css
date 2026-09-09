@@ -1,0 +1,1839 @@
+/* =====================================================
+   LASTKM — SHIPMENT PAGE
+   FULL STYLING
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        "DM Sans",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color: #183126;
+
+    background:
+        radial-gradient(
+            circle at 82% 8%,
+            rgba(70, 190, 125, 0.11),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 5% 70%,
+            rgba(70, 190, 125, 0.06),
+            transparent 28%
+        ),
+        #f7faf8;
+
+    overflow-x: hidden;
+}
+
+
+/* =====================================================
+   BACKGROUND GLOWS
+===================================================== */
+
+.bg-glow {
+    position: fixed;
+
+    width: 360px;
+    height: 360px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    filter: blur(80px);
+
+    opacity: 0.22;
+
+    z-index: -1;
+}
+
+.glow-one {
+    top: 60px;
+    right: -150px;
+
+    background: #8de0b0;
+}
+
+.glow-two {
+    bottom: -170px;
+    left: -130px;
+
+    background: #b8e9ca;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar {
+    width: 100%;
+
+    height: 76px;
+
+    padding: 0 6%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    background:
+        rgba(255, 255, 255, 0.88);
+
+    border-bottom:
+        1px solid rgba(31, 65, 48, 0.07);
+
+    backdrop-filter: blur(18px);
+
+    -webkit-backdrop-filter: blur(18px);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    text-decoration: none;
+
+    color: #183126;
+}
+
+.brand-logo {
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #19462f,
+            #123723
+        );
+
+    color: white;
+
+    font-family:
+        "Manrope",
+        sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 8px 20px rgba(23, 61, 42, 0.17);
+}
+
+.brand span {
+    font-family:
+        "Manrope",
+        sans-serif;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.progress {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.progress-text {
+    color: #77877e;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.progress-line {
+    width: 125px;
+
+    height: 5px;
+
+    display: flex;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #e2eae5;
+}
+
+.progress-line span {
+    flex: 1;
+
+    height: 100%;
+
+    background: transparent;
+}
+
+.progress-line .completed,
+.progress-line .progress-active {
+    background: #38a96d;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main-container {
+    width: min(1160px, 90%);
+
+    margin: 0 auto;
+
+    padding:
+        54px 0
+        70px;
+}
+
+
+/* =====================================================
+   PAGE HEADING
+===================================================== */
+
+.page-heading {
+    max-width: 720px;
+
+    margin-bottom: 35px;
+}
+
+.heading-label {
+    width: fit-content;
+
+    padding:
+        7px 11px;
+
+    border:
+        1px solid #d7ebdf;
+
+    border-radius: 100px;
+
+    background: #edf8f1;
+
+    color: #2d9361;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.page-heading h1 {
+    margin-top: 16px;
+
+    font-family:
+        "Manrope",
+        sans-serif;
+
+    font-size:
+        clamp(34px, 4vw, 49px);
+
+    line-height: 1.08;
+
+    letter-spacing: -2px;
+
+    color: #183126;
+}
+
+.page-heading h1 span {
+    color: #2ca066;
+}
+
+.page-heading p {
+    max-width: 680px;
+
+    margin-top: 12px;
+
+    color: #718179;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   SHIPMENT LAYOUT
+===================================================== */
+
+.shipment-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.45fr)
+        minmax(300px, 0.75fr);
+
+    gap: 24px;
+
+    align-items: start;
+}
+
+
+/* =====================================================
+   FORM CARD
+===================================================== */
+
+.form-card {
+    position: relative;
+
+    padding: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    border:
+        1px solid #e1e9e4;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 18px 45px rgba(25, 65, 44, 0.055);
+}
+
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.card-header > div {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 13px;
+}
+
+.section-number {
+    width: 29px;
+    height: 29px;
+
+    flex-shrink: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: #edf8f1;
+
+    color: #2e9862;
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+.card-header h2 {
+    font-family:
+        "Manrope",
+        sans-serif;
+
+    font-size: 15px;
+
+    letter-spacing: -0.3px;
+
+    color: #24392e;
+}
+
+.card-header p {
+    margin-top: 3px;
+
+    color: #89968f;
+
+    font-size: 10px;
+}
+
+.second-header {
+    margin-bottom: 18px;
+}
+
+
+/* =====================================================
+   ROUTE FIELDS
+===================================================== */
+
+.route-fields {
+    position: relative;
+
+    margin-top: 22px;
+
+    display: grid;
+
+    gap: 18px;
+}
+
+.field {
+    position: relative;
+
+    min-width: 0;
+}
+
+.field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #52655b;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   INPUT WRAPPER
+===================================================== */
+
+.input-wrapper {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 45px;
+
+    border:
+        1px solid #dfe8e2;
+
+    border-radius: 11px;
+
+    background: #fbfdfc;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.input-wrapper:focus-within {
+    border-color: #7bc29b;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(55, 171, 108, 0.08);
+}
+
+.input-wrapper input {
+    width: 100%;
+
+    height: 43px;
+
+    padding: 0 13px;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #253b30;
+
+    font-family: inherit;
+
+    font-size: 12px;
+}
+
+.input-wrapper input::placeholder {
+    color: #a2ada7;
+}
+
+
+/* =====================================================
+   LOCATION DOT
+===================================================== */
+
+.location-dot {
+    width: 9px;
+    height: 9px;
+
+    flex-shrink: 0;
+
+    margin-left: 13px;
+
+    border-radius: 50%;
+}
+
+.pickup-dot {
+    background: #35a96d;
+
+    box-shadow:
+        0 0 0 4px rgba(53, 169, 109, 0.11);
+}
+
+.destination-dot {
+    background: #4775a4;
+
+    box-shadow:
+        0 0 0 4px rgba(71, 117, 164, 0.10);
+}
+
+
+/* =====================================================
+   ROUTE LINE
+===================================================== */
+
+.route-fields .route-line {
+    position: absolute;
+
+    left: 17px;
+
+    top: 45px;
+
+    width: 1px;
+
+    height: 62px;
+
+    border-left:
+        1px dashed #cbd9d1;
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   DIVIDER
+===================================================== */
+
+.divider {
+    width: 100%;
+
+    height: 1px;
+
+    margin: 27px 0;
+
+    background: #e9efeb;
+}
+
+
+/* =====================================================
+   FORM GRID
+===================================================== */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap:
+        17px
+        14px;
+}
+
+
+/* =====================================================
+   SELECT
+===================================================== */
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: "⌄";
+
+    position: absolute;
+
+    right: 13px;
+
+    top: 50%;
+
+    transform:
+        translateY(-55%);
+
+    color: #7d8c84;
+
+    font-size: 14px;
+
+    pointer-events: none;
+}
+
+.select-wrapper select {
+    width: 100%;
+
+    height: 45px;
+
+    padding:
+        0 38px
+        0 13px;
+
+    appearance: none;
+
+    -webkit-appearance: none;
+
+    border:
+        1px solid #dfe8e2;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background: #fbfdfc;
+
+    color: #32473c;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.select-wrapper select:focus {
+    border-color: #7bc29b;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(55, 171, 108, 0.08);
+}
+
+
+/* =====================================================
+   UNIT INPUT
+===================================================== */
+
+.unit-input {
+    padding-right: 12px;
+}
+
+.unit-input input {
+    padding-right: 4px;
+}
+
+.unit-input span {
+    flex-shrink: 0;
+
+    color: #89978f;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   ELIGIBILITY NOTE
+===================================================== */
+
+.eligibility-note {
+    margin-top: 22px;
+
+    padding:
+        13px 14px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    border:
+        1px solid #dcece2;
+
+    border-radius: 12px;
+
+    background: #f4faf6;
+}
+
+.note-icon {
+    width: 25px;
+    height: 25px;
+
+    flex-shrink: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 8px;
+
+    background: #e0f3e7;
+
+    color: #2d9760;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+.eligibility-note strong {
+    display: block;
+
+    color: #3b5949;
+
+    font-size: 10px;
+}
+
+.eligibility-note p {
+    margin-top: 3px;
+
+    color: #829188;
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   FORM ACTIONS
+===================================================== */
+
+.form-actions {
+    margin-top: 23px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.back-button,
+.continue-button {
+    min-height: 44px;
+
+    padding:
+        0 17px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.back-button {
+    border:
+        1px solid #dce5df;
+
+    background: white;
+
+    color: #627269;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+
+    border-color: #c9d8cf;
+}
+
+.continue-button {
+    min-width: 195px;
+
+    border: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            #173d2a,
+            #205438
+        );
+
+    color: white;
+
+    box-shadow:
+        0 9px 22px rgba(23, 61, 42, 0.16);
+}
+
+.continue-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 13px 27px rgba(23, 61, 42, 0.21);
+}
+
+.continue-button:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.continue-button .arrow {
+    margin-left: 9px;
+}
+
+
+/* =====================================================
+   ERROR MESSAGE
+===================================================== */
+
+.error-message {
+    min-height: 16px;
+
+    margin-top: 9px;
+
+    color: #a55d55;
+
+    font-size: 10px;
+
+    text-align: right;
+}
+
+
+/* =====================================================
+   RIGHT VISUAL CARD
+===================================================== */
+
+.visual-card {
+    min-height: 545px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    border:
+        1px solid #dfe9e3;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f5fbf7,
+            #eaf6ef
+        );
+
+    box-shadow:
+        0 18px 45px rgba(25, 65, 44, 0.055);
+}
+
+.visual-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 270px;
+    height: 270px;
+
+    right: -80px;
+    top: -90px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(105, 205, 146, 0.15);
+
+    filter: blur(5px);
+}
+
+.visual-label {
+    position: relative;
+
+    z-index: 2;
+
+    color: #75a088;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.1px;
+}
+
+
+/* =====================================================
+   PACKAGE ILLUSTRATION
+===================================================== */
+
+.package-illustration {
+    height: 300px;
+
+    position: relative;
+
+    display: grid;
+
+    place-items: center;
+}
+
+.soft-circle {
+    position: absolute;
+
+    width: 230px;
+    height: 230px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(82, 184, 119, 0.18),
+            rgba(82, 184, 119, 0.02) 70%
+        );
+}
+
+
+/* =====================================================
+   BIG BOX
+===================================================== */
+
+.big-box {
+    width: 135px;
+    height: 112px;
+
+    position: relative;
+
+    z-index: 3;
+
+    transform:
+        perspective(500px)
+        rotateX(3deg)
+        rotateY(-8deg)
+        rotateZ(-1deg);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #d9b17b,
+            #c99a62
+        );
+
+    box-shadow:
+        20px 25px 30px rgba(72, 91, 74, 0.16);
+}
+
+.big-box::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: -27px;
+
+    width: 100%;
+    height: 31px;
+
+    transform:
+        skewX(-36deg);
+
+    transform-origin: bottom left;
+
+    border-radius: 4px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e6c18e,
+            #d5aa73
+        );
+}
+
+.big-box::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: -25px;
+
+    width: 26px;
+    height: 100%;
+
+    transform:
+        skewY(-36deg);
+
+    transform-origin: left top;
+
+    border-radius: 2px;
+
+    background:
+        #b98750;
+}
+
+
+/* =====================================================
+   BOX TAPE
+===================================================== */
+
+.box-tape {
+    position: absolute;
+
+    top: -26px;
+    left: 54px;
+
+    width: 25px;
+    height: 138px;
+
+    transform:
+        rotate(0deg);
+
+    background:
+        rgba(247, 219, 169, 0.65);
+
+    z-index: 5;
+}
+
+
+/* =====================================================
+   BOX ARROWS
+===================================================== */
+
+.box-arrow {
+    position: absolute;
+
+    left: 48px;
+    top: 37px;
+
+    color: rgba(116, 76, 37, 0.48);
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    z-index: 6;
+
+    animation:
+        boxArrowFloat 2.8s ease-in-out infinite;
+}
+
+.second-arrow {
+    left: 75px;
+
+    animation-delay: 0.25s;
+}
+
+@keyframes boxArrowFloat {
+
+    0%,
+    100% {
+        transform: translateY(2px);
+
+        opacity: 0.45;
+    }
+
+    50% {
+        transform: translateY(-4px);
+
+        opacity: 0.9;
+    }
+}
+
+
+/* =====================================================
+   SMALL BOX
+===================================================== */
+
+.package-illustration .small-box {
+    width: 67px;
+    height: 54px;
+
+    position: absolute;
+
+    right: 32px;
+    bottom: 52px;
+
+    z-index: 5;
+
+    border-radius: 5px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e5c18d,
+            #cfa16b
+        );
+
+    box-shadow:
+        12px 14px 22px rgba(72, 91, 74, 0.13);
+
+    transform:
+        perspective(300px)
+        rotateY(-12deg)
+        rotateZ(4deg);
+
+    animation:
+        packageShake 3s ease-in-out infinite;
+}
+
+.package-illustration .small-box .box-tape {
+    top: -1px;
+    left: 25px;
+
+    width: 14px;
+    height: 55px;
+}
+
+@keyframes packageShake {
+
+    0%,
+    78%,
+    100% {
+        transform:
+            perspective(300px)
+            rotateY(-12deg)
+            rotateZ(4deg);
+    }
+
+    82% {
+        transform:
+            perspective(300px)
+            rotateY(-12deg)
+            rotateZ(2deg)
+            translateX(-2px);
+    }
+
+    86% {
+        transform:
+            perspective(300px)
+            rotateY(-12deg)
+            rotateZ(6deg)
+            translateX(2px);
+    }
+
+    90% {
+        transform:
+            perspective(300px)
+            rotateY(-12deg)
+            rotateZ(3deg)
+            translateX(-1px);
+    }
+}
+
+
+/* =====================================================
+   FLOATING DOTS
+===================================================== */
+
+.floating-dot {
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: #62bd87;
+
+    opacity: 0.45;
+
+    animation:
+        floatingDot 4s ease-in-out infinite;
+}
+
+.dot-one {
+    width: 7px;
+    height: 7px;
+
+    top: 60px;
+    left: 50px;
+}
+
+.dot-two {
+    width: 5px;
+    height: 5px;
+
+    top: 110px;
+    right: 54px;
+
+    animation-delay: 1s;
+}
+
+.dot-three {
+    width: 8px;
+    height: 8px;
+
+    bottom: 65px;
+    left: 65px;
+
+    animation-delay: 1.7s;
+}
+
+@keyframes floatingDot {
+
+    0%,
+    100% {
+        transform: translateY(0);
+
+        opacity: 0.35;
+    }
+
+    50% {
+        transform: translateY(-9px);
+
+        opacity: 0.75;
+    }
+}
+
+
+/* =====================================================
+   VISUAL BOTTOM
+===================================================== */
+
+.visual-bottom {
+    position: relative;
+
+    z-index: 3;
+}
+
+.ai-badge {
+    width: fit-content;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding:
+        6px 9px;
+
+    border-radius: 100px;
+
+    background:
+        rgba(255, 255, 255, 0.72);
+
+    border:
+        1px solid #d7eade;
+
+    color: #31845b;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+}
+
+.ai-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #36b876;
+
+    box-shadow:
+        0 0 0 4px rgba(54, 184, 118, 0.10);
+
+    animation:
+        aiPulse 1.8s infinite;
+}
+
+@keyframes aiPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+}
+
+.visual-bottom h3 {
+    max-width: 310px;
+
+    margin-top: 13px;
+
+    font-family:
+        "Manrope",
+        sans-serif;
+
+    font-size: 21px;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.7px;
+
+    color: #254436;
+}
+
+.visual-bottom p {
+    max-width: 330px;
+
+    margin-top: 8px;
+
+    color: #71857a;
+
+    font-size: 10px;
+
+    line-height: 1.65;
+}
+
+
+/* =====================================================
+   BACK HOME
+===================================================== */
+
+.back-home {
+    display: block;
+
+    margin:
+        20px auto
+        0;
+
+    padding: 7px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #8a9891;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease;
+}
+
+.back-home:hover {
+    color: #3c6651;
+}
+
+
+/* =====================================================
+   LOCATION PICKER
+===================================================== */
+
+.location-field {
+    position: relative;
+}
+
+
+/* =====================================================
+   LOCATION INPUT
+===================================================== */
+
+.location-input-wrapper {
+    position: relative;
+}
+
+.location-input-wrapper input {
+    padding-right: 50px;
+}
+
+
+/* =====================================================
+   CURRENT LOCATION BUTTON
+===================================================== */
+
+.location-button {
+    position: absolute;
+
+    right: 8px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 31px;
+    height: 31px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #edf8f1;
+
+    color: #29945f;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.location-button:hover {
+    background: #dff2e7;
+
+    transform:
+        translateY(-50%)
+        scale(1.05);
+}
+
+.location-button.loading {
+    animation:
+        locationPulse 1s infinite;
+}
+
+@keyframes locationPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+}
+
+
+/* =====================================================
+   LOCATION HINT
+===================================================== */
+
+.location-hint {
+    min-height: 13px;
+
+    margin-top: 6px;
+
+    padding-left: 2px;
+
+    color: #91a098;
+
+    font-size: 9px;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   LOCATION RESULTS DROPDOWN
+===================================================== */
+
+.location-results {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: calc(100% + 6px);
+
+    z-index: 1000;
+
+    display: none;
+
+    overflow: hidden;
+
+    border:
+        1px solid #dfe9e3;
+
+    border-radius: 13px;
+
+    background: white;
+
+    box-shadow:
+        0 15px 35px rgba(27, 64, 44, 0.13);
+}
+
+.location-results.show {
+    display: block;
+}
+
+
+/* =====================================================
+   LOCATION RESULT
+===================================================== */
+
+.location-result {
+    width: 100%;
+
+    padding:
+        11px 12px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    border: none;
+
+    border-bottom:
+        1px solid #edf1ee;
+
+    background: white;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    transition:
+        background 0.18s ease;
+}
+
+.location-result:last-child {
+    border-bottom: none;
+}
+
+.location-result:hover {
+    background: #f3f9f5;
+}
+
+
+/* =====================================================
+   RESULT ICON
+===================================================== */
+
+.location-result-icon {
+    width: 29px;
+    height: 29px;
+
+    flex-shrink: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: #edf8f1;
+
+    color: #29945f;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   RESULT TEXT
+===================================================== */
+
+.location-result-text {
+    min-width: 0;
+
+    flex: 1;
+}
+
+.location-result-title {
+    display: block;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #294035;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.location-result-address {
+    display: block;
+
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #8a9790;
+
+    font-size: 9px;
+}
+
+
+/* =====================================================
+   CURRENT LOCATION RESULT
+===================================================== */
+
+.location-current-result {
+    border-bottom:
+        1px solid #e6eee9;
+
+    background: #f5fbf7;
+}
+
+
+/* =====================================================
+   SELECTED LOCATION
+===================================================== */
+
+.location-selected {
+    border-color:
+        #8bcba5 !important;
+
+    background:
+        #f5fbf7 !important;
+}
+
+
+/* =====================================================
+   LOCATION SEARCHING
+===================================================== */
+
+.location-searching {
+    padding: 13px;
+
+    color: #7c8d84;
+
+    font-size: 10px;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   LOCATION ERROR
+===================================================== */
+
+.location-error {
+    padding:
+        11px 13px;
+
+    color: #9b6e45;
+
+    background: #fff9f1;
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+
+/* =====================================================
+   RESPONSIVE — TABLET
+===================================================== */
+
+@media (max-width: 950px) {
+
+    .shipment-layout {
+        grid-template-columns:
+            1fr;
+    }
+
+    .visual-card {
+        min-height: 390px;
+    }
+
+    .package-illustration {
+        height: 220px;
+    }
+
+    .visual-bottom h3 {
+        font-size: 20px;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE — MOBILE
+===================================================== */
+
+@media (max-width: 650px) {
+
+    .navbar {
+        height: 68px;
+
+        padding:
+            0 5%;
+    }
+
+    .brand span {
+        font-size: 16px;
+    }
+
+    .progress-text {
+        display: none;
+    }
+
+    .progress-line {
+        width: 85px;
+    }
+
+    .main-container {
+        width: 91%;
+
+        padding:
+            35px 0
+            50px;
+    }
+
+    .page-heading {
+        margin-bottom: 25px;
+    }
+
+    .page-heading h1 {
+        font-size: 34px;
+
+        letter-spacing: -1.4px;
+    }
+
+    .page-heading p {
+        font-size: 12px;
+    }
+
+    .form-card {
+        padding: 20px 17px;
+
+        border-radius: 18px;
+    }
+
+    .form-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .route-fields {
+        gap: 17px;
+    }
+
+    .route-fields .route-line {
+        height: 60px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+    }
+
+    .back-button,
+    .continue-button {
+        width: 100%;
+    }
+
+    .continue-button {
+        min-width: 0;
+    }
+
+    .visual-card {
+        min-height: 420px;
+
+        padding: 21px;
+
+        border-radius: 18px;
+    }
+
+    .package-illustration {
+        height: 230px;
+    }
+
+    .visual-bottom h3 {
+        font-size: 20px;
+    }
+
+    .visual-bottom p {
+        font-size: 10px;
+    }
+
+    .location-results {
+        top: calc(100% + 5px);
+    }
+}
+
+
+/* =====================================================
+   VERY SMALL DEVICES
+===================================================== */
+
+@media (max-width: 400px) {
+
+    .page-heading h1 {
+        font-size: 30px;
+    }
+
+    .form-card {
+        padding: 18px 14px;
+    }
+
+    .visual-card {
+        min-height: 390px;
+    }
+
+    .big-box {
+        transform:
+            scale(0.9)
+            perspective(500px)
+            rotateX(3deg)
+            rotateY(-8deg)
+            rotateZ(-1deg);
+    }
+
+}

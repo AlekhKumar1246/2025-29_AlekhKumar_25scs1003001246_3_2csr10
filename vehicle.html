@@ -1,0 +1,2849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LastKM — Offer Vehicle Capacity</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 8% 12%,
+                    rgba(57, 169, 130, 0.13),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 18%,
+                    rgba(66, 150, 255, 0.08),
+                    transparent 30%
+                ),
+                #f5f8f7;
+
+            color: #14201c;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 74px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: rgba(255, 255, 255, 0.88);
+
+            backdrop-filter: blur(16px);
+
+            border-bottom: 1px solid rgba(20, 32, 28, 0.07);
+
+            position: relative;
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #173c31;
+            color: white;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .brand-name {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .brand-subtitle {
+            color: #82908a;
+            font-size: 11px;
+        }
+
+        .step-text {
+            color: #75817d;
+            font-size: 13px;
+        }
+
+        .home-btn {
+            padding: 9px 17px;
+
+            border: 1px solid #dce5e1;
+            border-radius: 10px;
+
+            background: white;
+            color: #34423d;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        /* PAGE */
+
+        .page {
+            width: min(1180px, 90%);
+
+            margin: auto;
+
+            padding: 45px 0 60px;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #43846d;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.13em;
+
+            margin-bottom: 10px;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #43a982;
+        }
+
+        h1 {
+            font-size: clamp(32px, 4.5vw, 50px);
+
+            line-height: 1.04;
+
+            letter-spacing: -0.045em;
+
+            margin-bottom: 11px;
+        }
+
+        .header p {
+            color: #72807b;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            max-width: 650px;
+        }
+
+        /* GRID */
+
+        .main-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.35fr)
+                minmax(310px, 0.65fr);
+
+            gap: 22px;
+
+            align-items: start;
+        }
+
+        /* FORM */
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.93);
+
+            border: 1px solid #e0e9e5;
+
+            border-radius: 24px;
+
+            padding: 27px;
+
+            box-shadow:
+                0 20px 55px rgba(24, 55, 44, 0.075);
+        }
+
+        .section-title {
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .section-description {
+            color: #82908a;
+
+            font-size: 11px;
+
+            margin-bottom: 22px;
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 16px;
+        }
+
+        .field {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #4f5f58;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            height: 46px;
+
+            padding: 0 13px;
+
+            border: 1px solid #dce6e1;
+
+            border-radius: 11px;
+
+            outline: none;
+
+            background: #fbfcfc;
+
+            color: #26332e;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            transition: 0.2s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #65aa90;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(67, 169, 130, 0.08);
+        }
+
+        input::placeholder {
+            color: #a1aca7;
+        }
+
+        /* LOCATION */
+
+        .location-wrap {
+            position: relative;
+        }
+
+        .location-input-row {
+            position: relative;
+        }
+
+        .location-input-row input {
+            padding-right: 112px;
+        }
+
+        .location-icon {
+            position: absolute;
+
+            left: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            font-size: 15px;
+
+            z-index: 2;
+        }
+
+        .location-input-row input {
+            padding-left: 39px;
+        }
+
+        .current-btn {
+            position: absolute;
+
+            right: 7px;
+            top: 7px;
+
+            height: 32px;
+
+            padding: 0 9px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #edf8f3;
+
+            color: #318b6a;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+        }
+
+        .current-btn:hover {
+            background: #dff2e9;
+        }
+
+        .suggestions {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+
+            top: calc(100% + 6px);
+
+            background: white;
+
+            border: 1px solid #dce7e2;
+
+            border-radius: 13px;
+
+            box-shadow:
+                0 16px 35px rgba(25, 55, 45, 0.14);
+
+            overflow: hidden;
+
+            z-index: 100;
+
+            display: none;
+        }
+
+        .suggestions.show {
+            display: block;
+        }
+
+        .suggestion {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: none;
+
+            background: white;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition: 0.15s ease;
+        }
+
+        .suggestion:hover {
+            background: #f1f8f5;
+        }
+
+        .suggestion-icon {
+            width: 29px;
+            height: 29px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #edf8f3;
+
+            color: #368d6d;
+
+            font-size: 12px;
+        }
+
+        .suggestion-text strong {
+            display: block;
+
+            color: #26332e;
+
+            font-size: 11px;
+
+            line-height: 1.3;
+        }
+
+        .suggestion-text span {
+            display: block;
+
+            color: #8a9691;
+
+            font-size: 9px;
+
+            line-height: 1.4;
+
+            margin-top: 2px;
+        }
+
+        .location-help {
+            color: #8a9691;
+
+            font-size: 9px;
+
+            margin-top: 5px;
+        }
+
+        .location-selected {
+            color: #378b6c;
+
+            font-weight: 700;
+        }
+
+        /* CAPACITY */
+
+        .capacity-box {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef8f4,
+                    #f8fbfa
+                );
+
+            border: 1px solid #dceee6;
+        }
+
+        .capacity-heading {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 14px;
+        }
+
+        .capacity-heading strong {
+            font-size: 13px;
+        }
+
+        .capacity-heading span {
+            color: #438b70;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-align: right;
+        }
+
+        .capacity-inputs {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+        }
+
+        .capacity-help {
+            color: #7d8c85;
+
+            font-size: 9px;
+
+            margin-top: 10px;
+        }
+
+        /* ROUTE */
+
+        .route-preview {
+            margin-top: 20px;
+
+            padding: 17px;
+
+            border-radius: 16px;
+
+            border: 1px solid #e4ebe8;
+
+            background: #fafcfb;
+        }
+
+        .route-preview-title {
+            color: #81908a;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 0.12em;
+
+            margin-bottom: 14px;
+        }
+
+        .route {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+        }
+
+        .route-point {
+            width: 32px;
+            height: 32px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #173c31;
+            color: white;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .route-point.destination {
+            background: #e9f6f0;
+
+            color: #348c6b;
+
+            border: 2px solid #48a982;
+        }
+
+        .route-details {
+            min-width: 0;
+        }
+
+        .route-details strong {
+            display: block;
+
+            font-size: 11px;
+
+            max-width: 180px;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .route-details span {
+            display: block;
+
+            color: #89958f;
+
+            font-size: 9px;
+
+            margin-top: 2px;
+        }
+
+        .route-line {
+            flex: 1;
+
+            height: 2px;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    #5aaa8a 0 7px,
+                    transparent 7px 12px
+                );
+        }
+
+        /* BUTTON */
+
+        .continue-btn {
+            width: 100%;
+
+            height: 52px;
+
+            margin-top: 22px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 18px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background: #173c31;
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 12px 26px rgba(23, 60, 49, 0.17);
+
+            transition: 0.2s ease;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 16px 32px rgba(23, 60, 49, 0.23);
+        }
+
+        .continue-arrow {
+            font-size: 19px;
+        }
+
+        /* ERROR */
+
+        .error-message {
+            display: none;
+
+            margin-top: 10px;
+
+            padding: 10px 12px;
+
+            border-radius: 10px;
+
+            background: #fff0ef;
+
+            border: 1px solid #f3d1ce;
+
+            color: #b34b43;
+
+            font-size: 10px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* RIGHT VISUAL */
+
+        .visual-card {
+            min-height: 540px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #e8f5f0,
+                    #f5faf8
+                );
+
+            border: 1px solid #dcebe5;
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 20px 55px rgba(24, 55, 44, 0.065);
+        }
+
+        .visual-circle {
+            position: absolute;
+
+            width: 320px;
+            height: 320px;
+
+            border-radius: 50%;
+
+            background: rgba(79, 183, 146, 0.12);
+
+            top: -90px;
+            right: -90px;
+        }
+
+        .visual-circle.two {
+            width: 210px;
+            height: 210px;
+
+            top: auto;
+            right: auto;
+
+            bottom: -80px;
+            left: -70px;
+
+            background: rgba(96, 162, 221, 0.08);
+        }
+
+        .visual-content {
+            position: relative;
+
+            z-index: 6;
+
+            padding: 25px;
+        }
+
+        .visual-label {
+            display: inline-flex;
+
+            padding: 7px 10px;
+
+            border-radius: 999px;
+
+            background: rgba(255,255,255,0.75);
+
+            border: 1px solid rgba(210,230,222,0.8);
+
+            color: #398b6c;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 0.1em;
+        }
+
+        .visual-content h2 {
+            max-width: 290px;
+
+            margin-top: 15px;
+
+            font-size: 27px;
+
+            line-height: 1.1;
+
+            letter-spacing: -0.035em;
+        }
+
+        .visual-content p {
+            max-width: 300px;
+
+            margin-top: 9px;
+
+            color: #718079;
+
+            font-size: 11px;
+
+            line-height: 1.55;
+        }
+
+        /* CITY */
+
+        .city {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+
+            bottom: 0;
+
+            height: 205px;
+        }
+
+        .building {
+            position: absolute;
+
+            bottom: 64px;
+
+            width: 42px;
+
+            border-radius: 5px 5px 0 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #d4e9e2,
+                    #c3ddd5
+                );
+        }
+
+        .building::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 10px 9px;
+
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255,255,255,0.65) 0 5px,
+                    transparent 5px 12px
+                );
+        }
+
+        .building.one {
+            height: 105px;
+            left: 10%;
+        }
+
+        .building.two {
+            height: 145px;
+            left: 25%;
+            width: 50px;
+        }
+
+        .building.three {
+            height: 82px;
+            left: 43%;
+            width: 45px;
+        }
+
+        .building.four {
+            height: 128px;
+            left: 59%;
+            width: 48px;
+        }
+
+        .building.five {
+            height: 92px;
+            left: 77%;
+            width: 44px;
+        }
+
+        .road {
+            position: absolute;
+
+            left: -5%;
+            bottom: 28px;
+
+            width: 110%;
+            height: 70px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #d6e2df,
+                    #cbdad6
+                );
+
+            transform:
+                perspective(300px)
+                rotateX(20deg);
+        }
+
+        .road-line {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            top: 34px;
+
+            height: 3px;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    white 0 45px,
+                    transparent 45px 80px
+                );
+        }
+
+        /* TRUCK */
+
+        .truck-wrapper {
+            position: absolute;
+
+            left: 50%;
+            bottom: 75px;
+
+            transform:
+                translateX(-50%)
+                perspective(500px)
+                rotateY(-8deg);
+
+            z-index: 4;
+
+            animation: truckMove 4.5s ease-in-out infinite;
+        }
+
+        @keyframes truckMove {
+
+            0% {
+                transform:
+                    translateX(-70%)
+                    perspective(500px)
+                    rotateY(-8deg);
+            }
+
+            50% {
+                transform:
+                    translateX(-20%)
+                    perspective(500px)
+                    rotateY(-8deg);
+            }
+
+            100% {
+                transform:
+                    translateX(20%)
+                    perspective(500px)
+                    rotateY(-8deg);
+            }
+        }
+
+        .truck {
+            position: relative;
+
+            width: 175px;
+            height: 68px;
+        }
+
+        .truck-body {
+            position: absolute;
+
+            left: 0;
+            top: 12px;
+
+            width: 125px;
+            height: 46px;
+
+            border-radius: 10px 5px 5px 10px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #18aa83,
+                    #078565
+                );
+        }
+
+        .truck-cabin {
+            position: absolute;
+
+            right: 3px;
+            top: 20px;
+
+            width: 55px;
+            height: 38px;
+
+            border-radius: 5px 10px 8px 4px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #15a57f,
+                    #08785e
+                );
+        }
+
+        .truck-window {
+            position: absolute;
+
+            top: 25px;
+            right: 10px;
+
+            width: 37px;
+            height: 17px;
+
+            border-radius: 4px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #d7f4ed,
+                    #94d9c8
+                );
+
+            border: 2px solid rgba(255,255,255,0.55);
+        }
+
+        .truck-box {
+            position: absolute;
+
+            left: 14px;
+            top: 19px;
+
+            width: 77px;
+            height: 29px;
+
+            border-radius: 5px;
+
+            background: rgba(255,255,255,0.18);
+
+            border: 1px solid rgba(255,255,255,0.35);
+        }
+
+        .truck-logo {
+            position: absolute;
+
+            left: 28px;
+            top: 27px;
+
+            color: white;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .wheel {
+            position: absolute;
+
+            width: 24px;
+            height: 24px;
+
+            bottom: 0;
+
+            border-radius: 50%;
+
+            background: #1c2925;
+
+            border: 4px solid #eef4f2;
+        }
+
+        .wheel.one {
+            left: 25px;
+        }
+
+        .wheel.two {
+            right: 22px;
+        }
+
+        /* FLOATING BOXES */
+
+        .floating-box {
+            position: absolute;
+
+            z-index: 5;
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: rgba(255,255,255,0.92);
+
+            box-shadow:
+                0 10px 25px rgba(30, 70, 55, 0.12);
+
+            font-size: 17px;
+
+            animation: boxFloat 3s ease-in-out infinite;
+        }
+
+        .floating-box.one {
+            left: 14%;
+            top: 32%;
+        }
+
+        .floating-box.two {
+            right: 16%;
+            top: 25%;
+
+            animation-delay: 1s;
+        }
+
+        .floating-box.three {
+            left: 28%;
+            top: 18%;
+
+            animation-delay: 1.8s;
+        }
+
+        @keyframes boxFloat {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-8px)
+                    rotate(3deg);
+            }
+        }
+
+        /* BENEFITS */
+
+        .benefits {
+            position: absolute;
+
+            left: 24px;
+            right: 24px;
+            bottom: 23px;
+
+            z-index: 8;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
+
+            gap: 8px;
+        }
+
+        .benefit {
+            padding: 12px;
+
+            background: rgba(255,255,255,0.82);
+
+            backdrop-filter: blur(10px);
+
+            border: 1px solid rgba(220,234,228,0.9);
+
+            border-radius: 12px;
+        }
+
+        .benefit strong {
+            display: block;
+
+            color: #173c31;
+
+            font-size: 11px;
+        }
+
+        .benefit span {
+            display: block;
+
+            color: #81908a;
+
+            font-size: 8px;
+
+            margin-top: 3px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 950px) {
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .visual-card {
+                min-height: 430px;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+            .step-text {
+                display: none;
+            }
+
+            .page {
+                width: 92%;
+
+                padding-top: 30px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .capacity-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .capacity-heading {
+                flex-direction: column;
+            }
+
+            .capacity-heading span {
+                text-align: left;
+            }
+
+            .visual-card {
+                min-height: 400px;
+            }
+
+            .benefits {
+                left: 15px;
+                right: 15px;
+            }
+
+            .benefit {
+                padding: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                LK
+            </div>
+
+            <div>
+                <div class="brand-name">
+                    LastKM
+                </div>
+
+                <div class="brand-subtitle">
+                    Smart backhaul delivery
+                </div>
+            </div>
+
+        </div>
+
+        <div class="step-text">
+            Driver · Step 1
+        </div>
+
+        <button class="home-btn" id="homeBtn">
+            Home
+        </button>
+
+    </nav>
+
+
+    <!-- PAGE -->
+
+    <main class="page">
+
+        <section class="header">
+
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                OFFER VEHICLE CAPACITY
+            </div>
+
+            <h1>
+                Turn unused space into<br>
+                an earning opportunity.
+            </h1>
+
+            <p>
+                Add your planned route and available vehicle capacity.
+                LastKM will find compatible shipments that fit your trip.
+            </p>
+
+        </section>
+
+
+        <section class="main-grid">
+
+
+            <!-- FORM -->
+
+            <div class="form-card">
+
+                <h2 class="section-title">
+                    Vehicle & route details
+                </h2>
+
+                <p class="section-description">
+                    Tell us about your vehicle and the trip you're already planning.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <!-- VEHICLE -->
+
+                    <div class="field">
+
+                        <label for="vehicleType">
+                            Vehicle type
+                        </label>
+
+                        <select id="vehicleType">
+
+                            <option value="">
+                                Select vehicle
+                            </option>
+
+                            <option value="Mini Truck">
+                                Mini Truck
+                            </option>
+
+                            <option value="Pickup Van">
+                                Pickup Van
+                            </option>
+
+                            <option value="Delivery Van">
+                                Delivery Van
+                            </option>
+
+                            <option value="Cargo Van">
+                                Cargo Van
+                            </option>
+
+                            <option value="Mini Van">
+                                Mini Van
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ID -->
+
+                    <div class="field">
+
+                        <label for="vehicleId">
+                            Vehicle ID
+                        </label>
+
+                        <input
+                            id="vehicleId"
+                            type="text"
+                            placeholder="e.g. LK-104"
+                        >
+
+                    </div>
+
+
+                    <!-- CURRENT LOCATION -->
+
+                    <div class="field full">
+
+                        <label for="currentLocation">
+                            Current / starting location
+                        </label>
+
+                        <div class="location-wrap">
+
+                            <div class="location-input-row">
+
+                                <span class="location-icon">
+                                    📍
+                                </span>
+
+                                <input
+                                    id="currentLocation"
+                                    type="text"
+                                    autocomplete="off"
+                                    placeholder="Search pickup or starting location"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="current-btn"
+                                    id="currentLocationBtn">
+
+                                    Use current
+
+                                </button>
+
+                            </div>
+
+                            <div
+                                class="suggestions"
+                                id="currentSuggestions">
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="location-help"
+                            id="currentLocationHelp">
+                            Search and select a location, or use your current GPS location.
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESTINATION -->
+
+                    <div class="field full">
+
+                        <label for="routeDestination">
+                            Planned destination
+                        </label>
+
+                        <div class="location-wrap">
+
+                            <div class="location-input-row">
+
+                                <span class="location-icon">
+                                    🏁
+                                </span>
+
+                                <input
+                                    id="routeDestination"
+                                    type="text"
+                                    autocomplete="off"
+                                    placeholder="Search destination"
+                                >
+
+                            </div>
+
+                            <div
+                                class="suggestions"
+                                id="destinationSuggestions">
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="location-help"
+                            id="destinationHelp">
+                            Select a suggested destination for accurate route matching.
+                        </div>
+
+                    </div>
+
+
+                    <!-- DEPARTURE -->
+
+                    <div class="field">
+
+                        <label for="departureTime">
+                            Departure time
+                        </label>
+
+                        <select id="departureTime">
+
+                            <option value="">
+                                Select time
+                            </option>
+
+                            <option value="Now">
+                                ⚡ Now
+                            </option>
+
+                            <option value="15 minutes">
+                                In 15 minutes
+                            </option>
+
+                            <option value="30 minutes">
+                                In 30 minutes
+                            </option>
+
+                            <option value="1 hour">
+                                In 1 hour
+                            </option>
+
+                            <option value="2 hours">
+                                In 2 hours
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- AVAILABILITY -->
+
+                    <div class="field">
+
+                        <label for="availability">
+                            Capacity available until
+                        </label>
+
+                        <select id="availability">
+
+                            <option value="">
+                                Select window
+                            </option>
+
+                            <option value="30 minutes">
+                                30 minutes
+                            </option>
+
+                            <option value="1 hour">
+                                1 hour
+                            </option>
+
+                            <option value="2 hours">
+                                2 hours
+                            </option>
+
+                            <option value="4 hours">
+                                4 hours
+                            </option>
+
+                            <option value="End of trip">
+                                End of trip
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CAPACITY -->
+
+                <div class="capacity-box">
+
+                    <div class="capacity-heading">
+
+                        <strong>
+                            Available capacity
+                        </strong>
+
+                        <span>
+                            Used space matters for matching
+                        </span>
+
+                    </div>
+
+
+                    <div class="capacity-inputs">
+
+                        <div class="field">
+
+                            <label for="totalCapacity">
+                                Total vehicle capacity (kg)
+                            </label>
+
+                            <input
+                                id="totalCapacity"
+                                type="number"
+                                min="1"
+                                placeholder="e.g. 20"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="availableCapacity">
+                                Available space (kg)
+                            </label>
+
+                            <input
+                                id="availableCapacity"
+                                type="number"
+                                min="1"
+                                placeholder="e.g. 12"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="capacity-help">
+                        Available space should not be greater than your total vehicle capacity.
+                    </p>
+
+                </div>
+
+
+                <!-- ROUTE PREVIEW -->
+
+                <div class="route-preview">
+
+                    <div class="route-preview-title">
+                        YOUR PLANNED ROUTE
+                    </div>
+
+                    <div class="route">
+
+                        <div class="route-point">
+                            A
+                        </div>
+
+                        <div class="route-details">
+
+                            <strong id="previewStart">
+                                Starting location
+                            </strong>
+
+                            <span>
+                                Current location
+                            </span>
+
+                        </div>
+
+
+                        <div class="route-line"></div>
+
+
+                        <div class="route-point destination">
+                            B
+                        </div>
+
+                        <div class="route-details">
+
+                            <strong id="previewDestination">
+                                Destination
+                            </strong>
+
+                            <span>
+                                Planned destination
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                <div
+                    class="error-message"
+                    id="errorMessage">
+                </div>
+
+
+                <!-- CONTINUE -->
+
+                <button
+                    class="continue-btn"
+                    id="continueBtn">
+
+                    <span>
+                        Find compatible shipments
+                    </span>
+
+                    <span class="continue-arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- VISUAL -->
+
+            <div class="visual-card">
+
+                <div class="visual-circle"></div>
+
+                <div class="visual-circle two"></div>
+
+
+                <div class="visual-content">
+
+                    <span class="visual-label">
+                        SMART BACKHAUL
+                    </span>
+
+                    <h2>
+                        Your return trip can carry more than air.
+                    </h2>
+
+                    <p>
+                        LastKM uses your existing route to find
+                        suitable shipments that fit your unused space.
+                    </p>
+
+                </div>
+
+
+                <div class="floating-box one">
+                    📦
+                </div>
+
+                <div class="floating-box two">
+                    📦
+                </div>
+
+                <div class="floating-box three">
+                    📦
+                </div>
+
+
+                <div class="city">
+
+                    <div class="building one"></div>
+                    <div class="building two"></div>
+                    <div class="building three"></div>
+                    <div class="building four"></div>
+                    <div class="building five"></div>
+
+                    <div class="road">
+
+                        <div class="road-line"></div>
+
+                    </div>
+
+
+                    <div class="truck-wrapper">
+
+                        <div class="truck">
+
+                            <div class="truck-body"></div>
+
+                            <div class="truck-box"></div>
+
+                            <div class="truck-logo">
+                                LastKM
+                            </div>
+
+                            <div class="truck-cabin"></div>
+
+                            <div class="truck-window"></div>
+
+                            <div class="wheel one"></div>
+
+                            <div class="wheel two"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="benefits">
+
+                    <div class="benefit">
+
+                        <strong>
+                            + Income
+                        </strong>
+
+                        <span>
+                            Earn from unused space
+                        </span>
+
+                    </div>
+
+                    <div class="benefit">
+
+                        <strong>
+                            Smart Match
+                        </strong>
+
+                        <span>
+                            Compatible shipments
+                        </span>
+
+                    </div>
+
+                    <div class="benefit">
+
+                        <strong>
+                            Less Waste
+                        </strong>
+
+                        <span>
+                            Better trip utilization
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            /* ==========================================
+               ELEMENTS
+            ========================================== */
+
+            const vehicleType =
+                document.getElementById("vehicleType");
+
+            const vehicleId =
+                document.getElementById("vehicleId");
+
+            const currentLocation =
+                document.getElementById("currentLocation");
+
+            const routeDestination =
+                document.getElementById("routeDestination");
+
+            const departureTime =
+                document.getElementById("departureTime");
+
+            const availability =
+                document.getElementById("availability");
+
+            const totalCapacity =
+                document.getElementById("totalCapacity");
+
+            const availableCapacity =
+                document.getElementById("availableCapacity");
+
+            const previewStart =
+                document.getElementById("previewStart");
+
+            const previewDestination =
+                document.getElementById("previewDestination");
+
+            const currentSuggestions =
+                document.getElementById("currentSuggestions");
+
+            const destinationSuggestions =
+                document.getElementById("destinationSuggestions");
+
+            const currentLocationBtn =
+                document.getElementById("currentLocationBtn");
+
+            const currentLocationHelp =
+                document.getElementById("currentLocationHelp");
+
+            const destinationHelp =
+                document.getElementById("destinationHelp");
+
+            const errorMessage =
+                document.getElementById("errorMessage");
+
+            const continueBtn =
+                document.getElementById("continueBtn");
+
+            const homeBtn =
+                document.getElementById("homeBtn");
+
+
+            /* ==========================================
+               LOCATION DATA
+            ========================================== */
+
+            let currentLocationData = null;
+            let destinationLocationData = null;
+
+            let currentSearchTimer = null;
+            let destinationSearchTimer = null;
+
+
+            /* ==========================================
+               LOAD SAVED VEHICLE DATA
+            ========================================== */
+
+            const savedVehicle =
+                JSON.parse(
+                    localStorage.getItem("lastkmVehicle")
+                ) || {};
+
+
+            if (savedVehicle.vehicleType) {
+                vehicleType.value =
+                    savedVehicle.vehicleType;
+            }
+
+            if (savedVehicle.vehicleId) {
+                vehicleId.value =
+                    savedVehicle.vehicleId;
+            }
+
+            if (savedVehicle.currentLocation) {
+                currentLocation.value =
+                    savedVehicle.currentLocation;
+            }
+
+            if (savedVehicle.destination) {
+                routeDestination.value =
+                    savedVehicle.destination;
+            }
+
+            if (savedVehicle.departureTime) {
+                departureTime.value =
+                    savedVehicle.departureTime;
+            }
+
+            if (savedVehicle.availability) {
+                availability.value =
+                    savedVehicle.availability;
+            }
+
+            if (savedVehicle.totalCapacity) {
+                totalCapacity.value =
+                    savedVehicle.totalCapacity;
+            }
+
+            if (savedVehicle.availableCapacity) {
+                availableCapacity.value =
+                    savedVehicle.availableCapacity;
+            }
+
+            if (
+                savedVehicle.currentLocationData
+            ) {
+                currentLocationData =
+                    savedVehicle.currentLocationData;
+            }
+
+            if (
+                savedVehicle.destinationLocationData
+            ) {
+                destinationLocationData =
+                    savedVehicle.destinationLocationData;
+            }
+
+
+            /* ==========================================
+               ROUTE PREVIEW
+            ========================================== */
+
+            function updatePreview() {
+
+                previewStart.textContent =
+                    currentLocation.value.trim() ||
+                    "Starting location";
+
+                previewDestination.textContent =
+                    routeDestination.value.trim() ||
+                    "Destination";
+            }
+
+            currentLocation.addEventListener(
+                "input",
+                () => {
+
+                    currentLocationData = null;
+
+                    currentLocationHelp.textContent =
+                        "Search and select a location, or use your current GPS location.";
+
+                    currentLocationHelp.classList.remove(
+                        "location-selected"
+                    );
+
+                    updatePreview();
+
+                    clearTimeout(
+                        currentSearchTimer
+                    );
+
+                    const query =
+                        currentLocation.value.trim();
+
+                    if (query.length < 3) {
+
+                        hideSuggestions(
+                            currentSuggestions
+                        );
+
+                        return;
+                    }
+
+                    currentSearchTimer =
+                        setTimeout(() => {
+
+                            searchLocations(
+                                query,
+                                currentSuggestions,
+                                "current"
+                            );
+
+                        }, 450);
+
+                }
+            );
+
+
+            routeDestination.addEventListener(
+                "input",
+                () => {
+
+                    destinationLocationData = null;
+
+                    destinationHelp.textContent =
+                        "Select a suggested destination for accurate route matching.";
+
+                    destinationHelp.classList.remove(
+                        "location-selected"
+                    );
+
+                    updatePreview();
+
+                    clearTimeout(
+                        destinationSearchTimer
+                    );
+
+                    const query =
+                        routeDestination.value.trim();
+
+                    if (query.length < 3) {
+
+                        hideSuggestions(
+                            destinationSuggestions
+                        );
+
+                        return;
+                    }
+
+                    destinationSearchTimer =
+                        setTimeout(() => {
+
+                            searchLocations(
+                                query,
+                                destinationSuggestions,
+                                "destination"
+                            );
+
+                        }, 450);
+
+                }
+            );
+
+
+            updatePreview();
+
+
+            /* ==========================================
+               SEARCH LOCATIONS
+            ========================================== */
+
+            async function searchLocations(
+                query,
+                container,
+                type
+            ) {
+
+                container.innerHTML = `
+                    <div class="suggestion">
+                        <div class="suggestion-icon">⌛</div>
+                        <div class="suggestion-text">
+                            <strong>Finding locations...</strong>
+                            <span>Please wait</span>
+                        </div>
+                    </div>
+                `;
+
+                container.classList.add("show");
+
+
+                try {
+
+                    const url =
+                        "https://nominatim.openstreetmap.org/search" +
+                        "?format=json" +
+                        "&addressdetails=1" +
+                        "&limit=5" +
+                        "&countrycodes=in" +
+                        "&q=" +
+                        encodeURIComponent(query);
+
+
+                    const response =
+                        await fetch(url, {
+                            headers: {
+                                "Accept":
+                                    "application/json"
+                            }
+                        });
+
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Location search failed"
+                        );
+                    }
+
+
+                    const results =
+                        await response.json();
+
+
+                    if (!results.length) {
+
+                        container.innerHTML = `
+                            <div class="suggestion">
+                                <div class="suggestion-icon">⌕</div>
+                                <div class="suggestion-text">
+                                    <strong>No location found</strong>
+                                    <span>Try a nearby area, sector, road or city name.</span>
+                                </div>
+                            </div>
+                        `;
+
+                        return;
+                    }
+
+
+                    container.innerHTML = "";
+
+
+                    results.forEach(
+                        (result) => {
+
+                            const button =
+                                document.createElement(
+                                    "button"
+                                );
+
+                            button.type = "button";
+
+                            button.className =
+                                "suggestion";
+
+
+                            const shortName =
+                                createShortLocationName(
+                                    result
+                                );
+
+
+                            const fullName =
+                                result.display_name;
+
+
+                            button.innerHTML = `
+                                <div class="suggestion-icon">
+                                    📍
+                                </div>
+
+                                <div class="suggestion-text">
+
+                                    <strong>
+                                        ${escapeHtml(shortName)}
+                                    </strong>
+
+                                    <span>
+                                        ${escapeHtml(fullName)}
+                                    </span>
+
+                                </div>
+                            `;
+
+
+                            button.addEventListener(
+                                "click",
+                                () => {
+
+                                    selectLocation(
+                                        result,
+                                        type
+                                    );
+
+                                }
+                            );
+
+
+                            container.appendChild(
+                                button
+                            );
+
+                        }
+                    );
+
+                }
+                catch (error) {
+
+                    container.innerHTML = `
+                        <div class="suggestion">
+                            <div class="suggestion-icon">!</div>
+                            <div class="suggestion-text">
+                                <strong>Couldn't search locations</strong>
+                                <span>Check your internet connection and try again.</span>
+                            </div>
+                        </div>
+                    `;
+
+                }
+
+            }
+
+
+            /* ==========================================
+               SELECT LOCATION
+            ========================================== */
+
+            function selectLocation(
+                result,
+                type
+            ) {
+
+                const locationData = {
+
+                    name:
+                        result.display_name,
+
+                    shortName:
+                        createShortLocationName(
+                            result
+                        ),
+
+                    latitude:
+                        Number(result.lat),
+
+                    longitude:
+                        Number(result.lon)
+
+                };
+
+
+                if (type === "current") {
+
+                    currentLocationData =
+                        locationData;
+
+                    currentLocation.value =
+                        locationData.shortName;
+
+                    currentLocationHelp.textContent =
+                        "✓ Location selected";
+
+                    currentLocationHelp.classList.add(
+                        "location-selected"
+                    );
+
+                    hideSuggestions(
+                        currentSuggestions
+                    );
+
+                }
+                else {
+
+                    destinationLocationData =
+                        locationData;
+
+                    routeDestination.value =
+                        locationData.shortName;
+
+                    destinationHelp.textContent =
+                        "✓ Destination selected";
+
+                    destinationHelp.classList.add(
+                        "location-selected"
+                    );
+
+                    hideSuggestions(
+                        destinationSuggestions
+                    );
+
+                }
+
+
+                updatePreview();
+
+            }
+
+
+            /* ==========================================
+               CURRENT GPS LOCATION
+            ========================================== */
+
+            currentLocationBtn.addEventListener(
+                "click",
+                () => {
+
+                    if (!navigator.geolocation) {
+
+                        currentLocationHelp.textContent =
+                            "GPS is not supported by this browser.";
+
+                        return;
+                    }
+
+
+                    currentLocationBtn.textContent =
+                        "Locating...";
+
+                    currentLocationBtn.disabled =
+                        true;
+
+
+                    navigator.geolocation.getCurrentPosition(
+
+                        async (position) => {
+
+                            const lat =
+                                position.coords.latitude;
+
+                            const lon =
+                                position.coords.longitude;
+
+
+                            try {
+
+                                const url =
+                                    "https://nominatim.openstreetmap.org/reverse" +
+                                    "?format=json" +
+                                    "&lat=" +
+                                    encodeURIComponent(lat) +
+                                    "&lon=" +
+                                    encodeURIComponent(lon) +
+                                    "&zoom=18" +
+                                    "&addressdetails=1";
+
+
+                                const response =
+                                    await fetch(url, {
+                                        headers: {
+                                            "Accept":
+                                                "application/json"
+                                        }
+                                    });
+
+
+                                const result =
+                                    await response.json();
+
+
+                                currentLocationData = {
+
+                                    name:
+                                        result.display_name ||
+                                        `${lat}, ${lon}`,
+
+                                    shortName:
+                                        createShortLocationName(
+                                            result
+                                        ),
+
+                                    latitude:
+                                        lat,
+
+                                    longitude:
+                                        lon
+
+                                };
+
+
+                                currentLocation.value =
+                                    currentLocationData.shortName;
+
+
+                                currentLocationHelp.textContent =
+                                    "✓ Current location detected";
+
+                                currentLocationHelp.classList.add(
+                                    "location-selected"
+                                );
+
+
+                                updatePreview();
+
+                            }
+                            catch (error) {
+
+                                currentLocationData = {
+
+                                    name:
+                                        "Current GPS location",
+
+                                    shortName:
+                                        "Current location",
+
+                                    latitude:
+                                        lat,
+
+                                    longitude:
+                                        lon
+
+                                };
+
+
+                                currentLocation.value =
+                                    "Current location";
+
+                                currentLocationHelp.textContent =
+                                    "✓ GPS location detected";
+
+                                currentLocationHelp.classList.add(
+                                    "location-selected"
+                                );
+
+
+                                updatePreview();
+
+                            }
+
+
+                            currentLocationBtn.textContent =
+                                "Use current";
+
+                            currentLocationBtn.disabled =
+                                false;
+
+                        },
+
+
+                        () => {
+
+                            currentLocationHelp.textContent =
+                                "Unable to access GPS. Please allow location permission.";
+
+                            currentLocationBtn.textContent =
+                                "Use current";
+
+                            currentLocationBtn.disabled =
+                                false;
+
+                        },
+
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 30000
+                        }
+
+                    );
+
+                }
+            );
+
+
+            /* ==========================================
+               HIDE SUGGESTIONS
+            ========================================== */
+
+            function hideSuggestions(
+                container
+            ) {
+
+                container.classList.remove(
+                    "show"
+                );
+
+                container.innerHTML = "";
+
+            }
+
+
+            document.addEventListener(
+                "click",
+                (event) => {
+
+                    if (
+                        !event.target.closest(
+                            ".location-wrap"
+                        )
+                    ) {
+
+                        hideSuggestions(
+                            currentSuggestions
+                        );
+
+                        hideSuggestions(
+                            destinationSuggestions
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /* ==========================================
+               SHORT LOCATION NAME
+            ========================================== */
+
+            function createShortLocationName(
+                result
+            ) {
+
+                if (
+                    result.address
+                ) {
+
+                    const address =
+                        result.address;
+
+
+                    const parts = [
+
+                        address.road,
+
+                        address.neighbourhood,
+
+                        address.suburb,
+
+                        address.city_district,
+
+                        address.city,
+
+                        address.town,
+
+                        address.village
+
+                    ];
+
+
+                    const cleanParts =
+                        parts.filter(
+                            (item) =>
+                                item &&
+                                item.trim()
+                        );
+
+
+                    if (cleanParts.length) {
+
+                        return cleanParts
+                            .slice(0, 3)
+                            .join(", ");
+
+                    }
+
+                }
+
+
+                return (
+                    result.display_name ||
+                    "Selected location"
+                )
+                    .split(",")
+                    .slice(0, 3)
+                    .join(",")
+                    .trim();
+
+            }
+
+
+            /* ==========================================
+               ESCAPE HTML
+            ========================================== */
+
+            function escapeHtml(
+                value
+            ) {
+
+                return String(value)
+                    .replace(
+                        /&/g,
+                        "&amp;"
+                    )
+                    .replace(
+                        /</g,
+                        "&lt;"
+                    )
+                    .replace(
+                        />/g,
+                        "&gt;"
+                    )
+                    .replace(
+                        /"/g,
+                        "&quot;"
+                    )
+                    .replace(
+                        /'/g,
+                        "&#039;"
+                    );
+
+            }
+
+
+            /* ==========================================
+               ERROR
+            ========================================== */
+
+            function showError(
+                message
+            ) {
+
+                errorMessage.textContent =
+                    message;
+
+                errorMessage.classList.add(
+                    "show"
+                );
+
+                errorMessage.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
+
+            function clearError() {
+
+                errorMessage.textContent = "";
+
+                errorMessage.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+            /* ==========================================
+               CONTINUE
+            ========================================== */
+
+            continueBtn.addEventListener(
+                "click",
+                () => {
+
+                    clearError();
+
+
+                    const type =
+                        vehicleType.value.trim();
+
+                    const id =
+                        vehicleId.value.trim();
+
+                    const start =
+                        currentLocation.value.trim();
+
+                    const destination =
+                        routeDestination.value.trim();
+
+                    const departure =
+                        departureTime.value;
+
+                    const availableUntil =
+                        availability.value;
+
+                    const total =
+                        Number(
+                            totalCapacity.value
+                        );
+
+                    const available =
+                        Number(
+                            availableCapacity.value
+                        );
+
+
+                    /* VALIDATION */
+
+                    if (!type) {
+
+                        showError(
+                            "Please select your vehicle type."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!id) {
+
+                        showError(
+                            "Please enter your vehicle ID."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!start) {
+
+                        showError(
+                            "Please select your current / starting location."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!currentLocationData) {
+
+                        showError(
+                            "Please select your starting location from the suggestions or use your current location."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!destination) {
+
+                        showError(
+                            "Please select your planned destination."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!destinationLocationData) {
+
+                        showError(
+                            "Please select the destination from the suggestions."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!departure) {
+
+                        showError(
+                            "Please select your departure time."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!availableUntil) {
+
+                        showError(
+                            "Please select your capacity availability window."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!total || total <= 0) {
+
+                        showError(
+                            "Please enter a valid total vehicle capacity."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!available || available <= 0) {
+
+                        showError(
+                            "Please enter the available capacity."
+                        );
+
+                        return;
+                    }
+
+
+                    if (available > total) {
+
+                        showError(
+                            "Available capacity cannot be greater than total vehicle capacity."
+                        );
+
+                        return;
+                    }
+
+
+                    /* SAVE */
+
+                    const vehicleData = {
+
+                        vehicleType:
+                            type,
+
+                        vehicleId:
+                            id,
+
+                        currentLocation:
+                            start,
+
+                        destination:
+                            destination,
+
+                        departureTime:
+                            departure,
+
+                        availability:
+                            availableUntil,
+
+                        totalCapacity:
+                            total,
+
+                        availableCapacity:
+                            available,
+
+                        currentLocationData:
+                            currentLocationData,
+
+                        destinationLocationData:
+                            destinationLocationData,
+
+                        createdAt:
+                            new Date().toISOString()
+
+                    };
+
+
+                    localStorage.setItem(
+                        "lastkmVehicle",
+                        JSON.stringify(
+                            vehicleData
+                        )
+                    );
+
+
+                    /* NEXT */
+
+                    window.location.href =
+                        "driver-matching.html";
+
+                }
+            );
+
+
+            /* ==========================================
+               HOME
+            ========================================== */
+
+            homeBtn.addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+        });
+
+    </script>
+
+</body>
+</html>

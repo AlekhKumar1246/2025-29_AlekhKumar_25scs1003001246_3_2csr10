@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LastKM — Confirm Shipment</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(62,177,136,.12),transparent 28%),
+        radial-gradient(circle at 90% 20%,rgba(70,145,255,.08),transparent 30%),
+        #f5f8f7;
+    color:#14201c;
+}
+
+.navbar{
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(20,32,28,.07);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.brand-icon{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:#173c31;
+    color:white;
+    font-size:13px;
+    font-weight:800;
+}
+
+.brand-name{
+    font-size:16px;
+    font-weight:800;
+}
+
+.brand-subtitle{
+    color:#82908a;
+    font-size:11px;
+}
+
+.step{
+    color:#75817d;
+    font-size:13px;
+}
+
+.home{
+    padding:9px 17px;
+    border:1px solid #dce5e1;
+    border-radius:10px;
+    background:white;
+    color:#34423d;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.page{
+    width:min(1050px,90%);
+    margin:auto;
+    padding:45px 0 60px;
+}
+
+.eyebrow{
+    color:#43846d;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.13em;
+    margin-bottom:10px;
+}
+
+h1{
+    font-size:clamp(34px,5vw,52px);
+    line-height:1.04;
+    letter-spacing:-.045em;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#74817c;
+    font-size:14px;
+    line-height:1.6;
+    max-width:650px;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:18px;
+    margin-top:30px;
+}
+
+.card{
+    background:rgba(255,255,255,.94);
+    border:1px solid #e0e9e5;
+    border-radius:20px;
+    padding:23px;
+    box-shadow:0 15px 40px rgba(25,55,45,.055);
+}
+
+.card-title{
+    font-size:11px;
+    color:#82908a;
+    font-weight:800;
+    letter-spacing:.1em;
+    margin-bottom:16px;
+}
+
+/* ROUTE */
+
+.route-box{
+    padding:18px;
+    border-radius:15px;
+    background:#f3f8f5;
+    border:1px solid #e0eee8;
+}
+
+.route-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.point{
+    width:34px;
+    height:34px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#173c31;
+    color:white;
+    font-size:9px;
+    font-weight:800;
+}
+
+.point.drop{
+    background:#e8f6f0;
+    color:#348c6b;
+    border:2px solid #49a982;
+}
+
+.place{
+    min-width:0;
+}
+
+.place span{
+    display:block;
+    color:#8a9691;
+    font-size:8px;
+    margin-bottom:3px;
+}
+
+.place strong{
+    display:block;
+    font-size:12px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.line{
+    flex:1;
+    height:2px;
+    background:repeating-linear-gradient(
+        90deg,
+        #61ad8e 0 6px,
+        transparent 6px 10px
+    );
+}
+
+/* TRIP */
+
+.trip-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin-top:16px;
+}
+
+.trip{
+    padding:13px 9px;
+    text-align:center;
+    border:1px solid #e7eeeb;
+    border-radius:12px;
+    background:#fafcfa;
+}
+
+.trip span{
+    display:block;
+    color:#8c9792;
+    font-size:7px;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.trip strong{
+    font-size:13px;
+}
+
+/* SHIPMENT */
+
+.shipment{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    margin-top:18px;
+    padding:15px;
+    border:1px solid #e6eeea;
+    border-radius:14px;
+}
+
+.package-icon{
+    width:45px;
+    height:45px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:#edf8f3;
+    font-size:22px;
+}
+
+.shipment-info strong{
+    display:block;
+    font-size:13px;
+}
+
+.shipment-info span{
+    display:block;
+    color:#89958f;
+    font-size:9px;
+    margin-top:4px;
+}
+
+/* VEHICLE */
+
+.vehicle{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding-bottom:18px;
+    border-bottom:1px solid #edf1ef;
+}
+
+.vehicle-icon{
+    width:55px;
+    height:55px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:15px;
+    background:linear-gradient(145deg,#eef8f4,#dceee7);
+    font-size:27px;
+}
+
+.vehicle-info strong{
+    display:block;
+    font-size:15px;
+}
+
+.vehicle-info span{
+    display:block;
+    color:#82908a;
+    font-size:9px;
+    margin-top:4px;
+}
+
+.verified{
+    margin-left:auto;
+    padding:6px 9px;
+    border-radius:999px;
+    background:#edf8f3;
+    color:#2d8b69;
+    font-size:8px;
+    font-weight:800;
+}
+
+/* EARNING */
+
+.earning-box{
+    margin-top:18px;
+    padding:17px;
+    border-radius:15px;
+    background:#f3f8f5;
+    border:1px solid #deeee7;
+}
+
+.earning-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:7px 0;
+}
+
+.earning-row span{
+    color:#7f8b86;
+    font-size:10px;
+}
+
+.earning-row strong{
+    font-size:12px;
+}
+
+.earning-row.net{
+    margin-top:7px;
+    padding-top:13px;
+    border-top:1px solid #dceae4;
+}
+
+.earning-row.net span{
+    color:#317f63;
+    font-weight:800;
+}
+
+.earning-row.net strong{
+    color:#173c31;
+    font-size:22px;
+}
+
+/* CONFIRM */
+
+.confirm{
+    margin-top:18px;
+}
+
+.note{
+    display:flex;
+    gap:10px;
+    padding:13px;
+    border-radius:12px;
+    background:#f7faf8;
+    border:1px solid #e5ede9;
+    margin-bottom:13px;
+}
+
+.note-icon{
+    width:30px;
+    height:30px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:9px;
+    background:#edf8f3;
+}
+
+.note strong{
+    display:block;
+    font-size:10px;
+}
+
+.note p{
+    color:#7d8984;
+    font-size:8px;
+    line-height:1.5;
+    margin-top:3px;
+}
+
+.confirm-btn{
+    width:100%;
+    height:51px;
+    border:none;
+    border-radius:12px;
+    background:#173c31;
+    color:white;
+    font-family:inherit;
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
+    box-shadow:0 13px 28px rgba(23,60,49,.17);
+    transition:.2s ease;
+}
+
+.confirm-btn:hover{
+    transform:translateY(-2px);
+}
+
+.back{
+    width:100%;
+    height:43px;
+    margin-top:9px;
+    border:1px solid #dce5e1;
+    border-radius:11px;
+    background:white;
+    color:#596861;
+    font-family:inherit;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+@media(max-width:800px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .navbar{
+        padding:0 5%;
+    }
+
+    .step{
+        display:none;
+    }
+
+    .page{
+        width:92%;
+        padding-top:32px;
+    }
+
+    .trip-grid{
+        grid-template-columns:1fr 1fr 1fr;
+    }
+
+    .route-row{
+        gap:7px;
+    }
+
+    .place strong{
+        font-size:10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            LK
+        </div>
+
+        <div>
+            <div class="brand-name">LastKM</div>
+            <div class="brand-subtitle">
+                Smart backhaul delivery
+            </div>
+        </div>
+
+    </div>
+
+    <div class="step">
+        Driver · Step 3
+    </div>
+
+    <button class="home" id="homeBtn">
+        Home
+    </button>
+
+</nav>
+
+
+<main class="page">
+
+    <div class="eyebrow">
+        SHIPMENT CONFIRMATION
+    </div>
+
+    <h1>
+        Review your trip<br>
+        before accepting.
+    </h1>
+
+    <p class="subtitle">
+        Check the route, shipment details and expected earnings
+        before you add this package to your journey.
+    </p>
+
+
+    <div class="layout">
+
+        <!-- LEFT -->
+
+        <section class="card">
+
+            <div class="card-title">
+                TRIP & SHIPMENT
+            </div>
+
+
+            <div class="route-box">
+
+                <div class="route-row">
+
+                    <div class="point">
+                        A
+                    </div>
+
+                    <div class="place">
+
+                        <span>
+                            PICKUP
+                        </span>
+
+                        <strong id="pickup">
+                            Greater Noida
+                        </strong>
+
+                    </div>
+
+
+                    <div class="line"></div>
+
+
+                    <div class="point drop">
+                        B
+                    </div>
+
+                    <div class="place">
+
+                        <span>
+                            DROP
+                        </span>
+
+                        <strong id="destination">
+                            Dwarka Sector 21
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="trip-grid">
+
+                <div class="trip">
+
+                    <span>
+                        TOTAL DISTANCE
+                    </span>
+
+                    <strong>
+                        14.6 km
+                    </strong>
+
+                </div>
+
+
+                <div class="trip">
+
+                    <span>
+                        TRIP TIME
+                    </span>
+
+                    <strong>
+                        34 min
+                    </strong>
+
+                </div>
+
+
+                <div class="trip">
+
+                    <span>
+                        EXTRA DISTANCE
+                    </span>
+
+                    <strong id="extraDistance">
+                        +1.8 km
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="shipment">
+
+                <div class="package-icon">
+                    📦
+                </div>
+
+                <div class="shipment-info">
+
+                    <strong id="packageName">
+                        Small boxes
+                    </strong>
+
+                    <span>
+                        Shipment <b id="shipmentId">SH-204</b>
+                        · <b id="weight">4 kg</b>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT -->
+
+        <section class="card">
+
+            <div class="card-title">
+                YOUR VEHICLE
+            </div>
+
+
+            <div class="vehicle">
+
+                <div class="vehicle-icon">
+                    🚚
+                </div>
+
+                <div class="vehicle-info">
+
+                    <strong id="vehicleName">
+                        Sharma Logistics
+                    </strong>
+
+                    <span id="vehicleType">
+                        Mini Truck · LK-104
+                    </span>
+
+                </div>
+
+                <div class="verified">
+                    ✓ VERIFIED
+                </div>
+
+            </div>
+
+
+            <div class="earning-box">
+
+                <div class="earning-row">
+
+                    <span>
+                        Shipment earning
+                    </span>
+
+                    <strong id="earning">
+                        ₹55
+                    </strong>
+
+                </div>
+
+
+                <div class="earning-row">
+
+                    <span>
+                        Estimated extra fuel
+                    </span>
+
+                    <strong id="fuel">
+                        − ₹8
+                    </strong>
+
+                </div>
+
+
+                <div class="earning-row net">
+
+                    <span>
+                        NET EXTRA EARNING
+                    </span>
+
+                    <strong id="net">
+                        ₹47
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="confirm">
+
+                <div class="note">
+
+                    <div class="note-icon">
+                        🌱
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Better use of an existing trip
+                        </strong>
+
+                        <p>
+                            You are using unused vehicle capacity,
+                            helping avoid a separate delivery journey.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="confirm-btn"
+                    id="confirmBtn">
+
+                    <span>
+                        Accept & Add Shipment
+                    </span>
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="back"
+                    id="backBtn">
+
+                    ← Back to matching
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const shipment =
+        JSON.parse(
+            localStorage.getItem(
+                "lastkmDriverShipment"
+            )
+        ) || {};
+
+    const vehicle =
+        JSON.parse(
+            localStorage.getItem(
+                "lastkmVehicle"
+            )
+        ) || {};
+
+
+    const pickup =
+        shipment.pickup ||
+        vehicle.currentLocation ||
+        "Greater Noida";
+
+    const destination =
+        shipment.destination ||
+        vehicle.destination ||
+        "Dwarka Sector 21";
+
+
+    document.getElementById("pickup")
+        .textContent = pickup;
+
+    document.getElementById("destination")
+        .textContent = destination;
+
+
+    document.getElementById("packageName")
+        .textContent =
+        shipment.package ||
+        "Small boxes";
+
+
+    document.getElementById("shipmentId")
+        .textContent =
+        shipment.id ||
+        "SH-204";
+
+
+    document.getElementById("weight")
+        .textContent =
+        `${shipment.weight || 4} kg`;
+
+
+    document.getElementById("extraDistance")
+        .textContent =
+        `+${shipment.extraDistance || "1.8 km"}`;
+
+
+    document.getElementById("vehicleName")
+        .textContent =
+        vehicle.ownerName ||
+        vehicle.driverName ||
+        "Sharma Logistics";
+
+
+    document.getElementById("vehicleType")
+        .textContent =
+        `${vehicle.vehicleType || "Mini Truck"} · ${vehicle.vehicleId || "LK-104"}`;
+
+
+    document.getElementById("earning")
+        .textContent =
+        `₹${shipment.earning || 55}`;
+
+
+    document.getElementById("fuel")
+        .textContent =
+        `− ₹${shipment.fuelCost || 8}`;
+
+
+    document.getElementById("net")
+        .textContent =
+        `₹${shipment.net || 47}`;
+
+
+    document.getElementById("confirmBtn")
+        .addEventListener("click", () => {
+
+            const booking = {
+
+                shipment: shipment,
+
+                vehicle: vehicle,
+
+                status:
+                    "Accepted",
+
+                acceptedAt:
+                    new Date().toISOString(),
+
+                earning:
+                    shipment.earning || 55,
+
+                fuelCost:
+                    shipment.fuelCost || 8,
+
+                netEarning:
+                    shipment.net || 47
+
+            };
+
+
+            localStorage.setItem(
+                "lastkmDriverBooking",
+                JSON.stringify(booking)
+            );
+
+
+            window.location.href =
+                "driver-tracking.html";
+
+        });
+
+
+    document.getElementById("backBtn")
+        .addEventListener("click", () => {
+
+            window.location.href =
+                "driver-matching.html";
+
+        });
+
+
+    document.getElementById("homeBtn")
+        .addEventListener("click", () => {
+
+            window.location.href =
+                "index.html";
+
+        });
+
+});
+
+</script>
+
+</body>
+</html>

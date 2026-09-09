@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LastKM — Delivery Complete</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(62,177,136,.13),transparent 28%),
+        radial-gradient(circle at 90% 20%,rgba(70,145,255,.07),transparent 30%),
+        #f5f8f7;
+    color:#14201c;
+}
+
+.navbar{
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    background:rgba(255,255,255,.9);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(20,32,28,.07);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.brand-icon{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:#173c31;
+    color:white;
+    font-size:13px;
+    font-weight:800;
+}
+
+.brand-name{
+    font-size:16px;
+    font-weight:800;
+}
+
+.brand-subtitle{
+    color:#82908a;
+    font-size:11px;
+}
+
+.step{
+    color:#75817d;
+    font-size:13px;
+}
+
+.home{
+    padding:9px 17px;
+    border:1px solid #dce5e1;
+    border-radius:10px;
+    background:white;
+    color:#34423d;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.page{
+    width:min(850px,90%);
+    margin:auto;
+    padding:55px 0 65px;
+}
+
+.success{
+    text-align:center;
+}
+
+.success-icon{
+    width:82px;
+    height:82px;
+    margin:0 auto 22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#173c31;
+    color:white;
+    font-size:36px;
+    box-shadow:
+        0 16px 35px rgba(23,60,49,.18);
+    animation:pop .5s ease;
+}
+
+@keyframes pop{
+    0%{
+        transform:scale(.6);
+        opacity:0;
+    }
+    70%{
+        transform:scale(1.08);
+    }
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.eyebrow{
+    color:#43846d;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.14em;
+    margin-bottom:10px;
+}
+
+h1{
+    font-size:clamp(34px,5vw,52px);
+    line-height:1.04;
+    letter-spacing:-.045em;
+}
+
+.subtitle{
+    color:#74817c;
+    font-size:14px;
+    line-height:1.6;
+    max-width:600px;
+    margin:10px auto 0;
+}
+
+.content{
+    margin-top:32px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.card{
+    background:rgba(255,255,255,.95);
+    border:1px solid #e0e9e5;
+    border-radius:20px;
+    padding:21px;
+    box-shadow:0 14px 38px rgba(25,55,45,.055);
+    text-align:left;
+}
+
+.card-title{
+    color:#89958f;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.1em;
+    margin-bottom:15px;
+}
+
+.shipment{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.package{
+    width:49px;
+    height:49px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:#edf8f3;
+    font-size:25px;
+}
+
+.shipment-info strong{
+    display:block;
+    font-size:13px;
+}
+
+.shipment-info span{
+    display:block;
+    color:#84908b;
+    font-size:9px;
+    margin-top:4px;
+}
+
+.route{
+    margin-top:17px;
+    padding:13px;
+    border-radius:12px;
+    background:#f6f9f7;
+    border:1px solid #e8efec;
+}
+
+.route-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.point{
+    width:25px;
+    height:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#173c31;
+    color:white;
+    font-size:8px;
+    font-weight:800;
+}
+
+.point.drop{
+    background:#e8f6f0;
+    color:#348c6b;
+    border:2px solid #49a982;
+}
+
+.route-place{
+    min-width:0;
+}
+
+.route-place strong{
+    display:block;
+    max-width:120px;
+    font-size:9px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.route-place span{
+    display:block;
+    color:#9aa49f;
+    font-size:7px;
+    margin-top:2px;
+}
+
+.route-line{
+    flex:1;
+    height:2px;
+    background:repeating-linear-gradient(
+        90deg,
+        #61ad8e 0 6px,
+        transparent 6px 10px
+    );
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.detail{
+    padding:11px;
+    border-radius:10px;
+    background:#f6f9f7;
+    border:1px solid #e8efec;
+}
+
+.detail span{
+    display:block;
+    color:#89958f;
+    font-size:7px;
+}
+
+.detail strong{
+    display:block;
+    color:#293a33;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.earning-card{
+    grid-column:1/-1;
+}
+
+.earning-main{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px;
+    border-radius:15px;
+    background:#edf8f3;
+    border:1px solid #dcece5;
+}
+
+.earning-label span{
+    display:block;
+    color:#718079;
+    font-size:9px;
+}
+
+.earning-label small{
+    display:block;
+    color:#8b9691;
+    font-size:8px;
+    margin-top:4px;
+}
+
+.earning-value{
+    color:#173c31;
+    font-size:29px;
+    font-weight:800;
+}
+
+.rating-card{
+    grid-column:1/-1;
+    text-align:center;
+}
+
+.rating-card .card-title{
+    margin-bottom:7px;
+}
+
+.rating-subtitle{
+    color:#82908a;
+    font-size:10px;
+    margin-bottom:16px;
+}
+
+.stars{
+    display:flex;
+    justify-content:center;
+    gap:9px;
+}
+
+.star{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid #dce5e1;
+    border-radius:12px;
+    background:white;
+    color:#d2dad6;
+    font-size:23px;
+    cursor:pointer;
+    transition:.18s ease;
+}
+
+.star:hover,
+.star.active{
+    color:#f0b84a;
+    background:#fffaf0;
+    border-color:#f0d89f;
+    transform:translateY(-2px);
+}
+
+.rating-text{
+    min-height:16px;
+    margin-top:9px;
+    color:#43846d;
+    font-size:9px;
+    font-weight:700;
+}
+
+.submit{
+    width:100%;
+    height:48px;
+    margin-top:15px;
+    border:none;
+    border-radius:12px;
+    background:#173c31;
+    color:white;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 12px 25px rgba(23,60,49,.17);
+    transition:.2s ease;
+}
+
+.submit:hover{
+    transform:translateY(-2px);
+}
+
+.home-bottom{
+    display:block;
+    margin:15px auto 0;
+    border:none;
+    background:transparent;
+    color:#64736c;
+    font-family:inherit;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.thanks{
+    display:none;
+    text-align:center;
+}
+
+.thanks-icon{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.thanks h2{
+    font-size:24px;
+}
+
+.thanks p{
+    color:#7c8983;
+    font-size:11px;
+    margin-top:6px;
+}
+
+@media(max-width:700px){
+
+    .navbar{
+        padding:0 5%;
+    }
+
+    .step{
+        display:none;
+    }
+
+    .page{
+        width:92%;
+        padding-top:35px;
+    }
+
+    .content{
+        grid-template-columns:1fr;
+    }
+
+    .earning-card,
+    .rating-card{
+        grid-column:auto;
+    }
+
+    .star{
+        width:40px;
+        height:40px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<nav class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            LK
+        </div>
+
+        <div>
+            <div class="brand-name">
+                LastKM
+            </div>
+
+            <div class="brand-subtitle">
+                Smart backhaul delivery
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="step">
+        Driver · Complete
+    </div>
+
+
+    <button
+        class="home"
+        id="homeBtn">
+
+        Home
+
+    </button>
+
+</nav>
+
+
+<main class="page">
+
+
+    <section
+        class="success"
+        id="successSection">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <div class="eyebrow">
+            DELIVERY COMPLETED
+        </div>
+
+        <h1>
+            Shipment delivered<br>
+            successfully.
+        </h1>
+
+        <p class="subtitle">
+            Great work. You made better use of your existing trip
+            and earned additional income along the way.
+        </p>
+
+    </section>
+
+
+    <div class="content">
+
+
+        <!-- SHIPMENT -->
+
+        <section class="card">
+
+            <div class="card-title">
+                DELIVERY SUMMARY
+            </div>
+
+
+            <div class="shipment">
+
+                <div class="package">
+                    📦
+                </div>
+
+
+                <div class="shipment-info">
+
+                    <strong id="packageName">
+                        Small boxes
+                    </strong>
+
+                    <span>
+                        Shipment
+                        <b id="shipmentId">SH-204</b>
+                        ·
+                        <b id="weight">4 kg</b>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="route">
+
+                <div class="route-row">
+
+                    <div class="point">
+                        A
+                    </div>
+
+                    <div class="route-place">
+
+                        <strong id="pickup">
+                            Greater Noida
+                        </strong>
+
+                        <span>
+                            Pickup
+                        </span>
+
+                    </div>
+
+
+                    <div class="route-line"></div>
+
+
+                    <div class="point drop">
+                        B
+                    </div>
+
+                    <div class="route-place">
+
+                        <strong id="destination">
+                            Dwarka Sector 21
+                        </strong>
+
+                        <span>
+                            Delivered
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TRIP -->
+
+        <section class="card">
+
+            <div class="card-title">
+                TRIP DETAILS
+            </div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail">
+
+                    <span>
+                        TOTAL DISTANCE
+                    </span>
+
+                    <strong>
+                        14.6 km
+                    </strong>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span>
+                        TRIP TIME
+                    </span>
+
+                    <strong>
+                        34 min
+                    </strong>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span>
+                        EXTRA DISTANCE
+                    </span>
+
+                    <strong>
+                        +1.8 km
+                    </strong>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span>
+                        FUEL COST
+                    </span>
+
+                    <strong id="fuel">
+                        − ₹8
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- EARNING -->
+
+        <section class="card earning-card">
+
+            <div class="card-title">
+                YOUR EARNING
+            </div>
+
+
+            <div class="earning-main">
+
+                <div class="earning-label">
+
+                    <span>
+                        NET EXTRA EARNING
+                    </span>
+
+                    <small>
+                        After estimated additional fuel cost
+                    </small>
+
+                </div>
+
+
+                <div
+                    class="earning-value"
+                    id="netEarning">
+
+                    ₹47
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RATING -->
+
+        <section class="card rating-card">
+
+            <div class="card-title">
+                RATE THIS DELIVERY
+            </div>
+
+            <p class="rating-subtitle">
+                How was your experience with this shipment?
+            </p>
+
+
+            <div class="stars">
+
+                <button
+                    class="star"
+                    data-rating="1">
+                    ★
+                </button>
+
+                <button
+                    class="star"
+                    data-rating="2">
+                    ★
+                </button>
+
+                <button
+                    class="star"
+                    data-rating="3">
+                    ★
+                </button>
+
+                <button
+                    class="star"
+                    data-rating="4">
+                    ★
+                </button>
+
+                <button
+                    class="star"
+                    data-rating="5">
+                    ★
+                </button>
+
+            </div>
+
+
+            <div
+                class="rating-text"
+                id="ratingText">
+            </div>
+
+
+            <button
+                class="submit"
+                id="submitRating">
+
+                Submit Rating
+
+            </button>
+
+        </section>
+
+    </div>
+
+
+    <section
+        class="thanks"
+        id="thanksSection">
+
+        <div class="thanks-icon">
+            ⭐
+        </div>
+
+        <h2>
+            Thanks for your feedback!
+        </h2>
+
+        <p>
+            Your rating helps LastKM improve future matches.
+        </p>
+
+        <button
+            class="home-bottom"
+            id="finishBtn">
+
+            Return to Home →
+
+        </button>
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const booking =
+        JSON.parse(
+            localStorage.getItem(
+                "lastkmDriverBooking"
+            )
+        ) || {};
+
+    const shipment =
+        booking.shipment || {};
+
+    const vehicle =
+        booking.vehicle || {};
+
+
+    document.getElementById("packageName")
+        .textContent =
+        shipment.package ||
+        "Small boxes";
+
+
+    document.getElementById("shipmentId")
+        .textContent =
+        shipment.id ||
+        "SH-204";
+
+
+    document.getElementById("weight")
+        .textContent =
+        `${shipment.weight || 4} kg`;
+
+
+    document.getElementById("pickup")
+        .textContent =
+        shipment.pickup ||
+        vehicle.currentLocation ||
+        "Greater Noida";
+
+
+    document.getElementById("destination")
+        .textContent =
+        shipment.destination ||
+        vehicle.destination ||
+        "Dwarka Sector 21";
+
+
+    document.getElementById("fuel")
+        .textContent =
+        `− ₹${booking.fuelCost || shipment.fuelCost || 8}`;
+
+
+    document.getElementById("netEarning")
+        .textContent =
+        `₹${booking.netEarning || shipment.net || 47}`;
+
+
+    /* RATING */
+
+    const stars =
+        document.querySelectorAll(".star");
+
+    const ratingText =
+        document.getElementById("ratingText");
+
+    const ratingWords = [
+        "",
+        "Poor",
+        "Needs improvement",
+        "Good",
+        "Very good",
+        "Excellent"
+    ];
+
+    let selectedRating = 0;
+
+
+    stars.forEach(star => {
+
+        star.addEventListener(
+            "click",
+            () => {
+
+                selectedRating =
+                    Number(
+                        star.dataset.rating
+                    );
+
+
+                stars.forEach(s => {
+
+                    s.classList.toggle(
+                        "active",
+                        Number(
+                            s.dataset.rating
+                        ) <= selectedRating
+                    );
+
+                });
+
+
+                ratingText.textContent =
+                    ratingWords[selectedRating];
+
+            }
+        );
+
+    });
+
+
+    /* SUBMIT */
+
+    document
+        .getElementById("submitRating")
+        .addEventListener("click", () => {
+
+            if(!selectedRating){
+
+                alert(
+                    "Please select a rating first."
+                );
+
+                return;
+            }
+
+
+            const finalBooking = {
+
+                ...booking,
+
+                rating:selectedRating,
+
+                ratedAt:
+                    new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+                "lastkmDriverBooking",
+                JSON.stringify(
+                    finalBooking
+                )
+            );
+
+
+            document.getElementById(
+                "successSection"
+            ).style.display = "none";
+
+
+            document.querySelector(
+                ".content"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "thanksSection"
+            ).style.display = "block";
+
+        });
+
+
+    /* HOME */
+
+    document
+        .getElementById("homeBtn")
+        .addEventListener("click", () => {
+
+            window.location.href =
+                "index.html";
+
+        });
+
+
+    document
+        .getElementById("finishBtn")
+        .addEventListener("click", () => {
+
+            window.location.href =
+                "index.html";
+
+        });
+
+});
+
+</script>
+
+</body>
+</html>

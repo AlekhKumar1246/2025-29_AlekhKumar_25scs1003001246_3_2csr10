@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Confirm Booking — LastKM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        :root {
+            --green-dark: #123f2d;
+            --green: #299e66;
+            --green-light: #edf8f2;
+            --text: #20372d;
+            --muted: #84918b;
+            --border: #dfe9e3;
+            --page: #f7faf8;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 85% 8%,
+                    rgba(194,239,216,.42),
+                    transparent 28%
+                ),
+                var(--page);
+
+            color: var(--text);
+
+            font-family:
+                "DM Sans",
+                sans-serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ==============================
+           NAVBAR
+        ============================== */
+
+        .navbar {
+
+            width:
+                min(
+                    1400px,
+                    calc(100% - 80px)
+                );
+
+            height: 88px;
+
+            margin: auto;
+
+            padding:
+                0 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom:
+                1px solid #edf1ee;
+
+            background:
+                rgba(255,255,255,.88);
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            text-decoration: none;
+
+            color: var(--text);
+        }
+
+
+        .brand-logo {
+
+            width: 50px;
+            height: 50px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 15px;
+
+            background:
+                var(--green-dark);
+
+            color: white;
+
+            font-family:
+                Manrope,
+                sans-serif;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 10px 25px
+                rgba(18,63,45,.14);
+        }
+
+
+        .brand-name {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .brand-name strong {
+
+            font-family:
+                Manrope,
+                sans-serif;
+
+            font-size: 20px;
+        }
+
+
+        .brand-name span {
+
+            margin-top: 2px;
+
+            color: #93a098;
+
+            font-size: 10px;
+        }
+
+
+        .progress {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            color: #7e8d85;
+
+            font-size: 11px;
+        }
+
+
+        .progress-track {
+
+            width: 145px;
+            height: 5px;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+
+            background: #e1e9e4;
+        }
+
+
+        .progress-fill {
+
+            width: 60%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background: #35ad72;
+        }
+
+
+        /* ==============================
+           MAIN
+        ============================== */
+
+        .container {
+
+            width:
+                min(
+                    1050px,
+                    calc(100% - 40px)
+                );
+
+            margin: auto;
+
+            padding:
+                70px 0 55px;
+        }
+
+
+        .page-label {
+
+            width: fit-content;
+
+            padding:
+                8px 13px;
+
+            border:
+                1px solid #d5ebdf;
+
+            border-radius: 30px;
+
+            background:
+                #eef8f3;
+
+            color:
+                #248d5b;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: .8px;
+        }
+
+
+        h1 {
+
+            margin-top: 20px;
+
+            font-family:
+                Manrope,
+                sans-serif;
+
+            font-size:
+                clamp(
+                    42px,
+                    5vw,
+                    62px
+                );
+
+            line-height: 1;
+
+            letter-spacing: -2.5px;
+
+            color:
+                #17372a;
+        }
+
+
+        h1 span {
+
+            color:
+                var(--green);
+        }
+
+
+        .subtitle {
+
+            max-width: 620px;
+
+            margin-top: 15px;
+
+            color:
+                #7c8b83;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ==============================
+           CONTENT
+        ============================== */
+
+        .content {
+
+            margin-top: 42px;
+
+            display: grid;
+
+            grid-template-columns:
+                1.15fr
+                .85fr;
+
+            gap: 22px;
+
+            align-items: start;
+        }
+
+
+        .card {
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 23px;
+
+            background: white;
+
+            box-shadow:
+                0 15px 40px
+                rgba(28,67,48,.045);
+        }
+
+
+        /* ==============================
+           BOOKING SUMMARY
+        ============================== */
+
+        .summary-card {
+
+            padding: 27px;
+        }
+
+
+        .card-title {
+
+            color:
+                #75867d;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: .8px;
+        }
+
+
+        .vehicle {
+
+            margin-top: 21px;
+
+            padding: 17px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            border:
+                1px solid #dcebe2;
+
+            border-radius: 16px;
+
+            background:
+                #f5fbf7;
+        }
+
+
+        .vehicle-icon {
+
+            width: 53px;
+            height: 53px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 15px;
+
+            background:
+                #e2f4e9;
+
+            font-size: 27px;
+        }
+
+
+        .vehicle-info {
+
+            flex: 1;
+
+            min-width: 0;
+        }
+
+
+        .vehicle-info strong {
+
+            display: block;
+
+            color:
+                #244336;
+
+            font-family:
+                Manrope,
+                sans-serif;
+
+            font-size: 14px;
+        }
+
+
+        .vehicle-info span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color:
+                #8b9992;
+
+            font-size: 10px;
+        }
+
+
+        .selected-badge {
+
+            padding:
+                6px 9px;
+
+            border-radius: 8px;
+
+            background:
+                #dff3e7;
+
+            color:
+                #258b59;
+
+            font-size: 8px;
+
+            font-weight: 800;
+        }
+
+
+        /* ==============================
+           ROUTE
+        ============================== */
+
+        .route {
+
+            margin-top: 22px;
+
+            padding:
+                19px;
+
+            border:
+                1px solid #e6ece8;
+
+            border-radius: 16px;
+
+        }
+
+
+        .route-point {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+        }
+
+
+        .point-icon {
+
+            width: 28px;
+            height: 28px;
+
+            flex-shrink: 0;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 9px;
+
+            background:
+                #edf8f2;
+
+            color:
+                #299e66;
+
+            font-size: 9px;
+
+            font-weight: 800;
+        }
+
+
+        .point-info {
+
+            min-width: 0;
+        }
+
+
+        .point-info span {
+
+            display: block;
+
+            color:
+                #98a49e;
+
+            font-size: 8px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .5px;
+        }
+
+
+        .point-info strong {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color:
+                #344b40;
+
+            font-size: 12px;
+
+            word-break: break-word;
+        }
+
+
+        .route-line {
+
+            width: 1px;
+
+            height: 22px;
+
+            margin:
+                3px 0 3px 13px;
+
+            background:
+                #cfe4d7;
+        }
+
+
+        /* ==============================
+           PACKAGE
+        ============================== */
+
+        .package-grid {
+
+            margin-top: 20px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
+
+            gap: 9px;
+        }
+
+
+        .package-item {
+
+            padding:
+                12px;
+
+            border-radius:
+                11px;
+
+            background:
+                #f7f9f7;
+        }
+
+
+        .package-item span {
+
+            display: block;
+
+            color:
+                #9aa59f;
+
+            font-size: 8px;
+        }
+
+
+        .package-item strong {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color:
+                #40564c;
+
+            font-size: 10px;
+        }
+
+
+        /* ==============================
+           PRICE CARD
+        ============================== */
+
+        .price-card {
+
+            padding:
+                28px;
+        }
+
+
+        .price-heading {
+
+            color:
+                #75867d;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing:
+                .8px;
+        }
+
+
+        .price-main {
+
+            margin-top: 17px;
+
+            padding:
+                22px;
+
+            text-align: center;
+
+            border-radius:
+                18px;
+
+            background:
+                #eff9f4;
+        }
+
+
+        .price-main span {
+
+            display: block;
+
+            color:
+                #759083;
+
+            font-size: 9px;
+        }
+
+
+        .price-main strong {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color:
+                #173e2d;
+
+            font-family:
+                Manrope,
+                sans-serif;
+
+            font-size:
+                43px;
+
+            letter-spacing:
+                -1.5px;
+        }
+
+
+        .price-comparison {
+
+            margin-top: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+        }
+
+
+        .price-option {
+
+            flex: 1;
+
+            padding:
+                12px;
+
+            border-radius:
+                11px;
+
+            background:
+                #f7f9f7;
+        }
+
+
+        .price-option span {
+
+            display: block;
+
+            color:
+                #929e98;
+
+            font-size: 8px;
+        }
+
+
+        .price-option strong {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color:
+                #53645b;
+
+            font-size:
+                14px;
+        }
+
+
+        .price-option.old strong {
+
+            color:
+                #89938e;
+
+            text-decoration:
+                line-through;
+        }
+
+
+        .vs {
+
+            color:
+                #9aa59f;
+
+            font-size: 8px;
+
+            font-weight: 700;
+        }
+
+
+        .saving {
+
+            margin-top: 11px;
+
+            padding:
+                12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-radius:
+                11px;
+
+            background:
+                #eaf7ef;
+
+            color:
+                #3e8060;
+
+            font-size: 9px;
+        }
+
+
+        .saving strong {
+
+            color:
+                #218d59;
+
+            font-size: 10px;
+        }
+
+
+        /* ==============================
+           IMPACT
+        ============================== */
+
+        .impact {
+
+            margin-top: 18px;
+
+            padding:
+                14px 15px;
+
+            display: flex;
+
+            gap: 11px;
+
+            border-radius:
+                13px;
+
+            background:
+                #f5faf7;
+
+            border:
+                1px solid #e3eee7;
+        }
+
+
+        .impact-icon {
+
+            flex-shrink: 0;
+
+            width: 30px;
+            height: 30px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 9px;
+
+            background:
+                #e0f2e7;
+
+            font-size: 14px;
+        }
+
+
+        .impact-text strong {
+
+            display: block;
+
+            color:
+                #446254;
+
+            font-size: 9px;
+        }
+
+
+        .impact-text span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color:
+                #8a9891;
+
+            font-size: 8px;
+
+            line-height:
+                1.45;
+        }
+
+
+        /* ==============================
+           CONFIRM BUTTON
+        ============================== */
+
+        .confirm-button {
+
+            width: 100%;
+
+            margin-top: 20px;
+
+            padding:
+                16px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 14px;
+
+            border:
+                none;
+
+            border-radius:
+                13px;
+
+            background:
+                var(--green-dark);
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 12px 25px
+                rgba(18,63,45,.15);
+
+            transition:
+                .2s ease;
+        }
+
+
+        .confirm-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            background:
+                #0d3525;
+        }
+
+
+        .confirm-button:disabled {
+
+            opacity:
+                .65;
+
+            cursor:
+                not-allowed;
+
+            transform:
+                none;
+        }
+
+
+        /* ==============================
+           BACK
+        ============================== */
+
+        .back-area {
+
+            margin-top: 23px;
+
+            text-align: center;
+        }
+
+
+        .back-button {
+
+            border:
+                none;
+
+            background:
+                transparent;
+
+            color:
+                #8a9790;
+
+            font-size:
+                9px;
+
+            cursor:
+                pointer;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (
+            max-width: 800px
+        ) {
+
+            .navbar {
+
+                width: 100%;
+
+                padding:
+                    0 18px;
+            }
+
+
+            .container {
+
+                width:
+                    calc(100% - 28px);
+
+                padding-top:
+                    40px;
+            }
+
+
+            .content {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .progress {
+
+                display: none;
+            }
+
+        }
+
+
+        @media (
+            max-width: 500px
+        ) {
+
+            h1 {
+
+                font-size:
+                    40px;
+            }
+
+
+            .summary-card,
+            .price-card {
+
+                padding:
+                    20px;
+            }
+
+
+            .package-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .price-main strong {
+
+                font-size:
+                    38px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+
+    <a
+        href="index.html"
+        class="brand"
+    >
+
+        <div class="brand-logo">
+            LK
+        </div>
+
+
+        <div class="brand-name">
+
+            <strong>
+                LastKM
+            </strong>
+
+            <span>
+                Smarter routes. Better use.
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <div class="progress">
+
+        <span>
+            Step 6 of 9
+        </span>
+
+
+        <div class="progress-track">
+
+            <div class="progress-fill"></div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="container">
+
+
+    <div class="page-label">
+        BOOKING CONFIRMATION
+    </div>
+
+
+    <h1>
+
+        Almost
+        <span>there.</span>
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Review your shipment and selected vehicle
+        before confirming the LastKM booking.
+
+    </p>
+
+
+
+    <section class="content">
+
+
+        <!-- ==========================
+             LEFT — BOOKING SUMMARY
+        =========================== -->
+
+        <div class="card summary-card">
+
+
+            <div class="card-title">
+                SELECTED VEHICLE
+            </div>
+
+
+            <div class="vehicle">
+
+
+                <div class="vehicle-icon">
+                    🚚
+                </div>
+
+
+                <div class="vehicle-info">
+
+                    <strong
+                        id="vehicleName"
+                    >
+                        Sharma Logistics
+                    </strong>
+
+                    <span
+                        id="vehicleType"
+                    >
+                        Mini Truck · LK-104
+                    </span>
+
+                </div>
+
+
+                <div class="selected-badge">
+                    SELECTED
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ROUTE -->
+
+            <div class="route">
+
+
+                <div class="route-point">
+
+
+                    <div class="point-icon">
+                        A
+                    </div>
+
+
+                    <div class="point-info">
+
+                        <span>
+                            Pickup
+                        </span>
+
+                        <strong
+                            id="pickup"
+                        >
+                            —
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="route-line"></div>
+
+
+                <div class="route-point">
+
+
+                    <div class="point-icon">
+                        B
+                    </div>
+
+
+                    <div class="point-info">
+
+                        <span>
+                            Destination
+                        </span>
+
+                        <strong
+                            id="destination"
+                        >
+                            —
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PACKAGE -->
+
+            <div class="package-grid">
+
+
+                <div class="package-item">
+
+                    <span>
+                        Package
+                    </span>
+
+                    <strong
+                        id="package"
+                    >
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="package-item">
+
+                    <span>
+                        Weight
+                    </span>
+
+                    <strong
+                        id="weight"
+                    >
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="package-item">
+
+                    <span>
+                        Delivery
+                    </span>
+
+                    <strong
+                        id="deliveryTime"
+                    >
+                        —
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==========================
+             RIGHT — PRICE
+        =========================== -->
+
+        <div class="card price-card">
+
+
+            <div class="price-heading">
+                YOUR LASTKM PRICE
+            </div>
+
+
+            <div class="price-main">
+
+                <span>
+                    Final delivery price
+                </span>
+
+                <strong
+                    id="finalPrice"
+                >
+                    ₹115
+                </strong>
+
+            </div>
+
+
+            <div class="price-comparison">
+
+
+                <div class="price-option">
+
+                    <span>
+                        LastKM
+                    </span>
+
+                    <strong
+                        id="lastKMPrice"
+                    >
+                        ₹115
+                    </strong>
+
+                </div>
+
+
+                <div class="vs">
+                    VS
+                </div>
+
+
+                <div class="price-option old">
+
+                    <span>
+                        Dedicated
+                    </span>
+
+                    <strong
+                        id="dedicatedPrice"
+                    >
+                        ₹180
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="saving">
+
+                <span>
+                    💚 You save
+                </span>
+
+                <strong
+                    id="saving"
+                >
+                    ₹65 · 36%
+                </strong>
+
+            </div>
+
+
+
+            <!-- SMALL IMPACT -->
+
+            <div class="impact">
+
+
+                <div class="impact-icon">
+                    🌱
+                </div>
+
+
+                <div class="impact-text">
+
+                    <strong>
+                        Better use of an existing trip
+                    </strong>
+
+                    <span>
+                        Your package is using unused vehicle
+                        capacity instead of requiring another
+                        dedicated delivery journey.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <button
+                class="confirm-button"
+                id="confirmButton"
+            >
+
+                <span>
+                    Confirm Booking
+                </span>
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <div class="back-area">
+
+        <button
+            class="back-button"
+            id="backButton"
+        >
+            ← Back to matching
+        </button>
+
+    </div>
+
+
+</main>
+
+
+
+<script>
+
+    /* ==========================================
+       LOAD SAVED DATA
+    ========================================== */
+
+
+    const shipment =
+        JSON.parse(
+            localStorage.getItem(
+                "lastkmShipment"
+            )
+        ) || {};
+
+
+    const match =
+        JSON.parse(
+            localStorage.getItem(
+                "lastkmMatch"
+            )
+        ) || {};
+
+
+    /* ==========================================
+       ELEMENTS
+    ========================================== */
+
+
+    const vehicleName =
+        document.getElementById(
+            "vehicleName"
+        );
+
+
+    const vehicleType =
+        document.getElementById(
+            "vehicleType"
+        );
+
+
+    const pickup =
+        document.getElementById(
+            "pickup"
+        );
+
+
+    const destination =
+        document.getElementById(
+            "destination"
+        );
+
+
+    const packageElement =
+        document.getElementById(
+            "package"
+        );
+
+
+    const weight =
+        document.getElementById(
+            "weight"
+        );
+
+
+    const deliveryTime =
+        document.getElementById(
+            "deliveryTime"
+        );
+
+
+    const finalPrice =
+        document.getElementById(
+            "finalPrice"
+        );
+
+
+    const lastKMPrice =
+        document.getElementById(
+            "lastKMPrice"
+        );
+
+
+    const dedicatedPrice =
+        document.getElementById(
+            "dedicatedPrice"
+        );
+
+
+    const saving =
+        document.getElementById(
+            "saving"
+        );
+
+
+    const confirmButton =
+        document.getElementById(
+            "confirmButton"
+        );
+
+
+    const backButton =
+        document.getElementById(
+            "backButton"
+        );
+
+
+    /* ==========================================
+       HELPERS
+    ========================================== */
+
+
+    function text(value) {
+
+        return value
+            ? String(value)
+            : "—";
+
+    }
+
+
+    function packageName(value) {
+
+        const names = {
+
+            "small-box":
+                "Small Box",
+
+            "medium-box":
+                "Medium Box",
+
+            "documents":
+                "Documents",
+
+            "groceries":
+                "Groceries",
+
+            "clothing":
+                "Clothing",
+
+            "electronics":
+                "Electronics"
+
+        };
+
+
+        return names[value] ||
+            text(value);
+
+    }
+
+
+    function timeName(value) {
+
+        const names = {
+
+            current:
+                "⚡ ASAP",
+
+            morning:
+                "9 AM – 12 PM",
+
+            afternoon:
+                "12 PM – 3 PM",
+
+            evening:
+                "3 PM – 6 PM",
+
+            "late-evening":
+                "6 PM – 9 PM"
+
+        };
+
+
+        return names[value] ||
+            "—";
+
+    }
+
+
+    /* ==========================================
+       DISPLAY DATA
+    ========================================== */
+
+
+    vehicleName.textContent =
+        text(
+            match.name ||
+            match.driver ||
+            "Selected Vehicle"
+        );
+
+
+    vehicleType.textContent =
+
+        `${text(
+            match.type ||
+            "Vehicle"
+        )} · ${text(
+            match.id
+        )}`;
+
+
+    pickup.textContent =
+        text(
+            shipment.pickup
+        );
+
+
+    destination.textContent =
+        text(
+            shipment.destination
+        );
+
+
+    packageElement.textContent =
+        packageName(
+            shipment.packageType
+        );
+
+
+    weight.textContent =
+        `${Number(
+            shipment.weight || 0
+        )} kg`;
+
+
+    deliveryTime.textContent =
+        timeName(
+            shipment.time
+        );
+
+
+    /* ==========================================
+       PRICE
+    ========================================== */
+
+
+    const lastKM =
+        Number(
+            match.lastKMPrice ||
+            match.lastKmPrice ||
+            115
+        );
+
+
+    const dedicated =
+        Number(
+            match.dedicatedPrice ||
+            180
+        );
+
+
+    const savingAmount =
+        Math.max(
+            0,
+            dedicated - lastKM
+        );
+
+
+    const savingPercent =
+        dedicated > 0
+
+            ? Math.round(
+                (
+                    savingAmount /
+                    dedicated
+                ) * 100
+            )
+
+            : 0;
+
+
+    finalPrice.textContent =
+        `₹${lastKM}`;
+
+
+    lastKMPrice.textContent =
+        `₹${lastKM}`;
+
+
+    dedicatedPrice.textContent =
+        `₹${dedicated}`;
+
+
+    saving.textContent =
+        `₹${savingAmount} · ${savingPercent}%`;
+
+
+    /* ==========================================
+       CONFIRM BOOKING
+    ========================================== */
+
+
+    confirmButton.addEventListener(
+        "click",
+        function() {
+
+
+            confirmButton.disabled =
+                true;
+
+
+            confirmButton.innerHTML =
+
+                `
+                    <span>
+                        Booking confirmed
+                    </span>
+
+                    <span>
+                        ✓
+                    </span>
+                `;
+
+
+            /*
+               Save booking status.
+            */
+
+            localStorage.setItem(
+                "lastkmBooking",
+                JSON.stringify({
+
+                    status:
+                        "confirmed",
+
+                    confirmedAt:
+                        new Date()
+                            .toISOString(),
+
+                    vehicle:
+                        match,
+
+                    shipment:
+                        shipment,
+
+                    price:
+                        lastKM,
+
+                    dedicatedPrice:
+                        dedicated,
+
+                    saving:
+                        savingAmount
+
+                })
+            );
+
+
+            /*
+               Small delay makes the
+               confirmation feel natural.
+            */
+
+            setTimeout(
+                function() {
+
+                    window.location.href =
+                        "tracking.html";
+
+                },
+                650
+            );
+
+        }
+    );
+
+
+    /* ==========================================
+       BACK
+    ========================================== */
+
+
+    backButton.addEventListener(
+        "click",
+        function() {
+
+            window.location.href =
+                "matching.html";
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

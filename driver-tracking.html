@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LastKM — Driver Tracking</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 8% 10%,rgba(62,177,136,.12),transparent 28%),
+        radial-gradient(circle at 90% 20%,rgba(70,145,255,.08),transparent 30%),
+        #f5f8f7;
+    color:#14201c;
+}
+
+.navbar{
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(20,32,28,.07);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.brand-icon{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:#173c31;
+    color:#fff;
+    font-size:13px;
+    font-weight:800;
+}
+
+.brand-name{
+    font-size:16px;
+    font-weight:800;
+}
+
+.brand-subtitle{
+    color:#82908a;
+    font-size:11px;
+}
+
+.step{
+    color:#75817d;
+    font-size:13px;
+}
+
+.home{
+    padding:9px 17px;
+    border:1px solid #dce5e1;
+    border-radius:10px;
+    background:#fff;
+    color:#34423d;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.page{
+    width:min(1180px,90%);
+    margin:auto;
+    padding:40px 0 55px;
+}
+
+.top{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    margin-bottom:22px;
+}
+
+.eyebrow{
+    color:#43846d;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.13em;
+    margin-bottom:9px;
+}
+
+h1{
+    font-size:clamp(32px,4.5vw,50px);
+    line-height:1.05;
+    letter-spacing:-.045em;
+}
+
+.subtitle{
+    color:#74817c;
+    font-size:14px;
+    margin-top:9px;
+}
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 16px;
+    background:#fff;
+    border:1px solid #dfe9e4;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#43a982;
+    box-shadow:0 0 0 6px rgba(67,169,130,.1);
+}
+
+/* MAIN */
+
+.layout{
+    display:grid;
+    grid-template-columns:1.55fr .75fr;
+    gap:18px;
+}
+
+.map-card{
+    min-height:590px;
+    overflow:hidden;
+    position:relative;
+    background:#eaf3f0;
+    border:1px solid #dce7e2;
+    border-radius:22px;
+    box-shadow:0 16px 45px rgba(25,55,45,.07);
+}
+
+/* MAP */
+
+.map{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    background:
+        linear-gradient(135deg,#edf5f2 25%,#e4efeb 25%,#e4efeb 50%,#edf5f2 50%,#edf5f2 75%,#e4efeb 75%);
+    background-size:90px 90px;
+}
+
+.road{
+    position:absolute;
+    height:72px;
+    background:rgba(255,255,255,.88);
+    transform:rotate(-16deg);
+    border-top:1px solid rgba(150,170,162,.18);
+    border-bottom:1px solid rgba(150,170,162,.18);
+}
+
+.road.one{
+    width:115%;
+    left:-8%;
+    top:45%;
+}
+
+.road.two{
+    width:100%;
+    left:10%;
+    top:70%;
+    transform:rotate(13deg);
+}
+
+.road.three{
+    width:75%;
+    left:35%;
+    top:18%;
+    transform:rotate(58deg);
+}
+
+.route-line{
+    position:absolute;
+    height:6px;
+    width:72%;
+    left:14%;
+    top:50%;
+    transform:rotate(-11deg);
+    background:#43a982;
+    border-radius:10px;
+    box-shadow:0 0 0 4px rgba(67,169,130,.12);
+}
+
+.route-dash{
+    position:absolute;
+    width:72%;
+    left:14%;
+    top:50%;
+    transform:rotate(-11deg);
+    height:2px;
+    background:repeating-linear-gradient(
+        90deg,
+        #fff 0 12px,
+        transparent 12px 22px
+    );
+    z-index:2;
+}
+
+.marker{
+    position:absolute;
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50% 50% 50% 5px;
+    transform:rotate(-45deg);
+    background:#173c31;
+    color:#fff;
+    box-shadow:0 10px 20px rgba(23,60,49,.2);
+    z-index:5;
+}
+
+.marker span{
+    transform:rotate(45deg);
+    font-size:10px;
+    font-weight:800;
+}
+
+.pickup-marker{
+    left:10%;
+    top:57%;
+}
+
+.drop-marker{
+    right:9%;
+    top:34%;
+    background:#fff;
+    color:#348c6b;
+    border:4px solid #43a982;
+}
+
+.truck{
+    position:absolute;
+    left:54%;
+    top:46%;
+    width:62px;
+    height:62px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 12px 25px rgba(30,70,55,.18);
+    z-index:8;
+    font-size:31px;
+    transition:left 1.5s ease,top 1.5s ease;
+}
+
+.truck::after{
+    content:"";
+    position:absolute;
+    inset:-7px;
+    border:2px solid rgba(67,169,130,.25);
+    border-radius:22px;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(.9);opacity:.7}
+    70%{transform:scale(1.25);opacity:0}
+    100%{transform:scale(1.25);opacity:0}
+}
+
+.map-label{
+    position:absolute;
+    padding:10px 13px;
+    background:rgba(255,255,255,.94);
+    border:1px solid #e1eae6;
+    border-radius:11px;
+    box-shadow:0 8px 22px rgba(25,55,45,.08);
+    z-index:7;
+}
+
+.map-label strong{
+    display:block;
+    font-size:10px;
+}
+
+.map-label span{
+    display:block;
+    color:#84908b;
+    font-size:8px;
+    margin-top:3px;
+}
+
+.pickup-label{
+    left:16%;
+    top:52%;
+}
+
+.drop-label{
+    right:15%;
+    top:29%;
+}
+
+.live-badge{
+    position:absolute;
+    left:20px;
+    bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:10px 13px;
+    background:rgba(255,255,255,.95);
+    border:1px solid #dfe9e4;
+    border-radius:11px;
+    font-size:9px;
+    font-weight:700;
+    z-index:10;
+}
+
+.live-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#43a982;
+}
+
+/* RIGHT */
+
+.side{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.card{
+    background:rgba(255,255,255,.94);
+    border:1px solid #e0e9e5;
+    border-radius:19px;
+    padding:20px;
+    box-shadow:0 13px 35px rgba(25,55,45,.055);
+}
+
+.card-title{
+    color:#89958f;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.1em;
+    margin-bottom:14px;
+}
+
+.driver{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.driver-icon{
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:#edf8f3;
+    font-size:24px;
+}
+
+.driver-info strong{
+    display:block;
+    font-size:13px;
+}
+
+.driver-info span{
+    display:block;
+    color:#82908a;
+    font-size:9px;
+    margin-top:4px;
+}
+
+.verified{
+    margin-left:auto;
+    padding:5px 8px;
+    border-radius:999px;
+    background:#edf8f3;
+    color:#2e8a68;
+    font-size:7px;
+    font-weight:800;
+}
+
+/* PROGRESS */
+
+.progress{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:relative;
+    margin-top:4px;
+}
+
+.progress::before{
+    content:"";
+    position:absolute;
+    left:8%;
+    right:8%;
+    top:13px;
+    height:3px;
+    background:#e4ebe8;
+    z-index:0;
+}
+
+.progress-fill{
+    position:absolute;
+    left:8%;
+    width:40%;
+    top:13px;
+    height:3px;
+    background:#43a982;
+    z-index:1;
+}
+
+.step-item{
+    position:relative;
+    z-index:2;
+    text-align:center;
+}
+
+.circle{
+    width:27px;
+    height:27px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    border-radius:50%;
+    background:#e7eeeb;
+    color:#84908b;
+    font-size:9px;
+    font-weight:800;
+}
+
+.step-item.active .circle,
+.step-item.done .circle{
+    background:#43a982;
+    color:#fff;
+}
+
+.step-item span{
+    display:block;
+    color:#89958f;
+    font-size:7px;
+    margin-top:7px;
+}
+
+.step-item.active span,
+.step-item.done span{
+    color:#318a69;
+    font-weight:700;
+}
+
+/* DETAILS */
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.detail{
+    padding:11px;
+    border-radius:10px;
+    background:#f6f9f7;
+    border:1px solid #e8efec;
+}
+
+.detail span{
+    display:block;
+    color:#89958f;
+    font-size:7px;
+}
+
+.detail strong{
+    display:block;
+    color:#293a33;
+    font-size:11px;
+    margin-top:4px;
+}
+
+/* EARNING */
+
+.earning{
+    padding:14px;
+    border-radius:13px;
+    background:#f0f8f4;
+    border:1px solid #dcece5;
+    text-align:center;
+}
+
+.earning span{
+    display:block;
+    color:#75847d;
+    font-size:8px;
+}
+
+.earning strong{
+    display:block;
+    color:#173c31;
+    font-size:26px;
+    margin-top:4px;
+}
+
+.earning small{
+    display:block;
+    color:#378d6b;
+    font-size:8px;
+    font-weight:700;
+    margin-top:3px;
+}
+
+/* BUTTON */
+
+.complete-btn{
+    width:100%;
+    height:48px;
+    border:none;
+    border-radius:12px;
+    background:#173c31;
+    color:white;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 17px;
+    box-shadow:0 12px 25px rgba(23,60,49,.17);
+    transition:.2s ease;
+}
+
+.complete-btn:hover{
+    transform:translateY(-2px);
+}
+
+@media(max-width:900px){
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .map-card{
+        min-height:500px;
+    }
+}
+
+@media(max-width:600px){
+    .navbar{
+        padding:0 5%;
+    }
+
+    .step{
+        display:none;
+    }
+
+    .page{
+        width:92%;
+        padding-top:30px;
+    }
+
+    .top{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .map-card{
+        min-height:430px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            LK
+        </div>
+
+        <div>
+            <div class="brand-name">LastKM</div>
+            <div class="brand-subtitle">
+                Smart backhaul delivery
+            </div>
+        </div>
+
+    </div>
+
+    <div class="step">
+        Driver · Step 4
+    </div>
+
+    <button class="home" id="homeBtn">
+        Home
+    </button>
+
+</nav>
+
+
+<main class="page">
+
+    <div class="top">
+
+        <div>
+
+            <div class="eyebrow">
+                LIVE DELIVERY
+            </div>
+
+            <h1>
+                Your shipment is<br>
+                on the way.
+            </h1>
+
+            <p class="subtitle">
+                Follow your route and keep an eye on your delivery.
+            </p>
+
+        </div>
+
+
+        <div class="status">
+            <span class="status-dot"></span>
+            In transit
+        </div>
+
+    </div>
+
+
+    <div class="layout">
+
+
+        <!-- MAP -->
+
+        <section class="map-card">
+
+            <div class="map">
+
+                <div class="road one"></div>
+                <div class="road two"></div>
+                <div class="road three"></div>
+
+                <div class="route-line"></div>
+                <div class="route-dash"></div>
+
+
+                <div class="marker pickup-marker">
+                    <span>A</span>
+                </div>
+
+
+                <div class="marker drop-marker">
+                    <span>B</span>
+                </div>
+
+
+                <div class="map-label pickup-label">
+
+                    <strong id="pickupLabel">
+                        Pickup
+                    </strong>
+
+                    <span>
+                        Shipment collected
+                    </span>
+
+                </div>
+
+
+                <div class="map-label drop-label">
+
+                    <strong id="dropLabel">
+                        Destination
+                    </strong>
+
+                    <span>
+                        Final drop
+                    </span>
+
+                </div>
+
+
+                <div class="truck" id="truck">
+                    🚚
+                </div>
+
+
+                <div class="live-badge">
+
+                    <span class="live-dot"></span>
+
+                    Driver location updating
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SIDE -->
+
+        <aside class="side">
+
+
+            <!-- VEHICLE -->
+
+            <section class="card">
+
+                <div class="card-title">
+                    YOUR DELIVERY
+                </div>
+
+
+                <div class="driver">
+
+                    <div class="driver-icon">
+                        🚚
+                    </div>
+
+
+                    <div class="driver-info">
+
+                        <strong id="driverName">
+                            Sharma Logistics
+                        </strong>
+
+                        <span id="vehicleInfo">
+                            Mini Truck · LK-104
+                        </span>
+
+                    </div>
+
+
+                    <div class="verified">
+                        ✓ VERIFIED
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROGRESS -->
+
+            <section class="card">
+
+                <div class="card-title">
+                    DELIVERY STATUS
+                </div>
+
+
+                <div class="progress">
+
+                    <div class="progress-fill"></div>
+
+
+                    <div class="step-item done">
+
+                        <div class="circle">
+                            ✓
+                        </div>
+
+                        <span>
+                            Accepted
+                        </span>
+
+                    </div>
+
+
+                    <div class="step-item done">
+
+                        <div class="circle">
+                            ✓
+                        </div>
+
+                        <span>
+                            Picked up
+                        </span>
+
+                    </div>
+
+
+                    <div class="step-item active">
+
+                        <div class="circle">
+                            3
+                        </div>
+
+                        <span>
+                            In transit
+                        </span>
+
+                    </div>
+
+
+                    <div class="step-item">
+
+                        <div class="circle">
+                            4
+                        </div>
+
+                        <span>
+                            Delivered
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- TRIP -->
+
+            <section class="card">
+
+                <div class="card-title">
+                    TRIP DETAILS
+                </div>
+
+
+                <div class="detail-grid">
+
+                    <div class="detail">
+
+                        <span>
+                            ROUTE
+                        </span>
+
+                        <strong>
+                            <span id="routeText">
+                                Active route
+                            </span>
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            DISTANCE
+                        </span>
+
+                        <strong>
+                            14.6 km
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            TIME
+                        </span>
+
+                        <strong>
+                            34 min
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            EXTRA KM
+                        </span>
+
+                        <strong>
+                            +1.8 km
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- EARNING -->
+
+            <section class="card">
+
+                <div class="card-title">
+                    YOUR EARNING
+                </div>
+
+
+                <div class="earning">
+
+                    <span>
+                        Net extra earning
+                    </span>
+
+                    <strong id="netEarning">
+                        ₹47
+                    </strong>
+
+                    <small>
+                        After estimated fuel cost
+                    </small>
+
+                </div>
+
+            </section>
+
+
+            <!-- COMPLETE -->
+
+            <button
+                class="complete-btn"
+                id="completeBtn">
+
+                <span>
+                    Mark Shipment Delivered
+                </span>
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const booking =
+        JSON.parse(
+            localStorage.getItem(
+                "lastkmDriverBooking"
+            )
+        ) || {};
+
+    const shipment =
+        booking.shipment || {};
+
+    const vehicle =
+        booking.vehicle || {};
+
+
+    const pickup =
+        shipment.pickup ||
+        vehicle.currentLocation ||
+        "Greater Noida";
+
+    const destination =
+        shipment.destination ||
+        vehicle.destination ||
+        "Dwarka Sector 21";
+
+
+    document.getElementById("pickupLabel")
+        .textContent = pickup;
+
+    document.getElementById("dropLabel")
+        .textContent = destination;
+
+    document.getElementById("routeText")
+        .textContent =
+        `${pickup} → ${destination}`;
+
+    document.getElementById("driverName")
+        .textContent =
+        vehicle.ownerName ||
+        vehicle.driverName ||
+        "Sharma Logistics";
+
+    document.getElementById("vehicleInfo")
+        .textContent =
+        `${vehicle.vehicleType || "Mini Truck"} · ${vehicle.vehicleId || "LK-104"}`;
+
+    document.getElementById("netEarning")
+        .textContent =
+        `₹${booking.netEarning || shipment.net || 47}`;
+
+
+    /* TRUCK MOVEMENT */
+
+    const truck =
+        document.getElementById("truck");
+
+    let position = 0;
+
+    setInterval(() => {
+
+        position++;
+
+        if(position === 1){
+
+            truck.style.left = "63%";
+            truck.style.top = "44%";
+
+        }
+        else if(position === 2){
+
+            truck.style.left = "72%";
+            truck.style.top = "40%";
+
+        }
+        else{
+
+            truck.style.left = "54%";
+            truck.style.top = "46%";
+
+            position = 0;
+
+        }
+
+    },4500);
+
+
+    /* COMPLETE */
+
+    document
+        .getElementById("completeBtn")
+        .addEventListener("click",() => {
+
+            const delivery = {
+
+                ...booking,
+
+                status:"Delivered",
+
+                deliveredAt:
+                    new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+                "lastkmDriverBooking",
+                JSON.stringify(delivery)
+            );
+
+
+            window.location.href =
+                "driver-complete.html";
+
+        });
+
+
+    /* HOME */
+
+    document
+        .getElementById("homeBtn")
+        .addEventListener("click",() => {
+
+            window.location.href =
+                "index.html";
+
+        });
+
+});
+
+</script>
+
+</body>
+</html>

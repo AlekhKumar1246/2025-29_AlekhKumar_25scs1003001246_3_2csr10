@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LastKM — Driver Matching</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(62,177,136,.12),transparent 28%),
+        radial-gradient(circle at 90% 20%,rgba(70,145,255,.08),transparent 30%),
+        #f5f8f7;
+    color:#14201c;
+}
+
+.navbar{
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(20,32,28,.07);
+}
+
+.brand{display:flex;align-items:center;gap:11px}
+
+.brand-icon{
+    width:38px;height:38px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:12px;
+    background:#173c31;color:white;
+    font-size:13px;font-weight:800;
+}
+
+.brand-name{font-size:16px;font-weight:800}
+.brand-subtitle{color:#82908a;font-size:11px}
+.step-text{color:#75817d;font-size:13px}
+
+.home-btn{
+    padding:9px 17px;
+    border:1px solid #dce5e1;
+    border-radius:10px;
+    background:white;
+    color:#34423d;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.page{
+    width:min(1180px,90%);
+    margin:auto;
+    padding:43px 0 60px;
+}
+
+.eyebrow{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:#43846d;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.13em;
+    margin-bottom:10px;
+}
+
+.eyebrow-dot{
+    width:7px;height:7px;
+    border-radius:50%;
+    background:#43a982;
+}
+
+h1{
+    font-size:clamp(32px,4.5vw,49px);
+    line-height:1.04;
+    letter-spacing:-.045em;
+    margin-bottom:10px;
+}
+
+.intro{
+    color:#74817c;
+    font-size:14px;
+    line-height:1.6;
+    max-width:720px;
+}
+
+.driver-summary{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+    margin:27px 0 25px;
+}
+
+.summary-card{
+    padding:15px 17px;
+    background:rgba(255,255,255,.88);
+    border:1px solid #e1eae6;
+    border-radius:15px;
+}
+
+.summary-label{
+    display:block;
+    color:#89958f;
+    font-size:9px;
+    letter-spacing:.1em;
+    font-weight:800;
+    margin-bottom:5px;
+}
+
+.summary-value{
+    display:block;
+    color:#24332d;
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.capacity-value{color:#398e6e}
+
+.ai-status{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 17px;
+    margin-bottom:20px;
+    border-radius:15px;
+    background:linear-gradient(135deg,#edf8f3,#f8fbfa);
+    border:1px solid #dceee6;
+}
+
+.ai-icon{
+    width:38px;height:38px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    background:#173c31;
+    color:white;
+    font-size:16px;
+}
+
+.ai-status strong{display:block;font-size:12px}
+.ai-status span{
+    display:block;
+    color:#7b8983;
+    font-size:10px;
+    margin-top:3px;
+}
+
+.match-header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    margin-bottom:13px;
+}
+
+.match-header h2{font-size:18px}
+.match-count{color:#7d8984;font-size:11px}
+
+.matches{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:15px;
+}
+
+.match-card{
+    position:relative;
+    background:rgba(255,255,255,.95);
+    border:1px solid #e0e9e5;
+    border-radius:19px;
+    padding:19px;
+    box-shadow:0 14px 38px rgba(25,55,45,.055);
+    transition:.2s ease;
+}
+
+.match-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 20px 45px rgba(25,55,45,.09);
+}
+
+.match-card.best{
+    border:1.5px solid #55aa89;
+    box-shadow:0 17px 42px rgba(55,145,110,.11);
+}
+
+.recommended{
+    position:absolute;
+    top:-9px;
+    left:18px;
+    padding:5px 9px;
+    border-radius:999px;
+    background:#173c31;
+    color:white;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.08em;
+}
+
+.vehicle-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+}
+
+.vehicle-icon{
+    width:47px;height:47px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:13px;
+    background:linear-gradient(145deg,#eef8f4,#dceee7);
+    font-size:24px;
+}
+
+.score{text-align:right}
+.score-number{
+    display:block;
+    color:#318a69;
+    font-size:20px;
+    font-weight:800;
+}
+
+.score-label{
+    color:#87938e;
+    font-size:8px;
+    font-weight:700;
+}
+
+.vehicle-name{
+    margin-top:13px;
+    font-size:15px;
+}
+
+.vehicle-type{
+    color:#82908a;
+    font-size:10px;
+    margin-top:3px;
+}
+
+.route{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:17px;
+}
+
+.route-point{
+    width:27px;height:27px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#173c31;
+    color:white;
+    font-size:8px;
+    font-weight:800;
+}
+
+.route-point.destination{
+    background:#e8f6f0;
+    color:#348c6b;
+    border:2px solid #49a982;
+}
+
+.route-name{min-width:0}
+
+.route-name strong{
+    display:block;
+    font-size:9px;
+    max-width:105px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.route-name span{
+    display:block;
+    color:#9aa49f;
+    font-size:8px;
+    margin-top:2px;
+}
+
+.route-line{
+    flex:1;
+    height:2px;
+    background:repeating-linear-gradient(
+        90deg,#61ad8e 0 6px,transparent 6px 10px
+    );
+}
+
+/* TRIP INFORMATION */
+
+.trip-overview{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+    margin-top:16px;
+    padding:11px 8px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#f0f8f4,#f8fbfa);
+    border:1px solid #e2eee9;
+}
+
+.trip-item{
+    text-align:center;
+    border-right:1px solid #dfeae5;
+}
+
+.trip-item:last-child{border-right:none}
+
+.trip-item span{
+    display:block;
+    color:#8b9691;
+    font-size:7px;
+    font-weight:700;
+    letter-spacing:.06em;
+    margin-bottom:4px;
+}
+
+.trip-item strong{
+    display:block;
+    color:#26362f;
+    font-size:11px;
+}
+
+/* DETAILS */
+
+.metrics{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:10px;
+}
+
+.metric{
+    padding:10px;
+    border-radius:10px;
+    background:#f6f9f7;
+    border:1px solid #eaf0ed;
+}
+
+.metric span{
+    display:block;
+    color:#89958f;
+    font-size:8px;
+}
+
+.metric strong{
+    display:block;
+    color:#2b3b34;
+    font-size:11px;
+    margin-top:3px;
+}
+
+.metric.green strong{color:#2e8c6b}
+
+/* EARNING */
+
+.earning{
+    margin-top:15px;
+    padding-top:14px;
+    border-top:1px solid #edf1ef;
+}
+
+.earning-main{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.earning-label{
+    color:#84908b;
+    font-size:9px;
+}
+
+.earning-label small{
+    display:block;
+    color:#a0aaa5;
+    font-size:8px;
+    margin-top:3px;
+}
+
+.earning-amount{
+    color:#173c31;
+    font-size:21px;
+    font-weight:800;
+}
+
+.earning-breakdown{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:9px;
+    padding:8px 10px;
+    border-radius:9px;
+    background:#edf8f3;
+}
+
+.earning-breakdown span{
+    color:#687871;
+    font-size:8px;
+}
+
+.net{
+    color:#247d5e !important;
+    font-size:10px !important;
+    font-weight:800;
+}
+
+/* SCORE */
+
+.score-bar{margin-top:13px}
+
+.score-bar-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:5px;
+}
+
+.score-bar-top span{
+    color:#89958f;
+    font-size:8px;
+}
+
+.bar{
+    width:100%;
+    height:5px;
+    background:#e9efec;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.bar-fill{
+    height:100%;
+    background:#43a982;
+    border-radius:10px;
+}
+
+.select-btn{
+    width:100%;
+    height:42px;
+    margin-top:15px;
+    border:1px solid #cfded8;
+    border-radius:11px;
+    background:white;
+    color:#247b5d;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.match-card.selected .select-btn{
+    background:#173c31;
+    border-color:#173c31;
+    color:white;
+}
+
+.explanation{
+    margin-top:21px;
+    padding:16px 18px;
+    border-radius:16px;
+    background:white;
+    border:1px solid #e0e9e5;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.explanation-icon{
+    width:35px;height:35px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    background:#edf8f3;
+}
+
+.explanation strong{display:block;font-size:11px}
+
+.explanation p{
+    color:#77847e;
+    font-size:9px;
+    line-height:1.5;
+    margin-top:3px;
+}
+
+.footer-actions{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:23px;
+}
+
+.back-btn{
+    height:45px;
+    padding:0 18px;
+    border:1px solid #dce5e1;
+    border-radius:11px;
+    background:white;
+    color:#596861;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.continue-btn{
+    min-width:230px;
+    height:47px;
+    padding:0 18px;
+    border:none;
+    border-radius:12px;
+    background:#173c31;
+    color:white;
+    font-family:inherit;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 12px 25px rgba(23,60,49,.17);
+}
+
+.continue-arrow{font-size:18px}
+
+@media(max-width:1050px){
+    .matches{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:750px){
+    .driver-summary{grid-template-columns:1fr}
+    .matches{grid-template-columns:1fr}
+
+    .footer-actions{
+        flex-direction:column-reverse;
+        gap:10px;
+    }
+
+    .back-btn,
+    .continue-btn{
+        width:100%;
+    }
+}
+
+@media(max-width:600px){
+    .navbar{padding:0 5%}
+    .step-text{display:none}
+    .page{width:92%;padding-top:32px}
+
+    .match-header{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:4px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="brand">
+        <div class="brand-icon">LK</div>
+
+        <div>
+            <div class="brand-name">LastKM</div>
+            <div class="brand-subtitle">Smart backhaul delivery</div>
+        </div>
+    </div>
+
+    <div class="step-text">Driver · Step 2</div>
+
+    <button class="home-btn" id="homeBtn">
+        Home
+    </button>
+
+</nav>
+
+
+<main class="page">
+
+    <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        AI SHIPMENT MATCHING
+    </div>
+
+    <h1>
+        We found shipments<br>
+        that fit your trip.
+    </h1>
+
+    <p class="intro">
+        LastKM compares route, capacity, timing and package
+        compatibility to find shipments that can travel with you.
+    </p>
+
+
+    <section class="driver-summary">
+
+        <div class="summary-card">
+            <span class="summary-label">YOUR ROUTE</span>
+            <span class="summary-value" id="driverRoute">
+                Starting location → Destination
+            </span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-label">VEHICLE</span>
+            <span class="summary-value" id="driverVehicle">
+                Mini Truck · LK-104
+            </span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-label">AVAILABLE CAPACITY</span>
+            <span class="summary-value capacity-value" id="driverCapacity">
+                12 kg available
+            </span>
+        </div>
+
+    </section>
+
+
+    <div class="ai-status">
+
+        <div class="ai-icon">✦</div>
+
+        <div>
+            <strong>AI has analyzed nearby shipment requests</strong>
+            <span>
+                Showing the strongest compatible matches for your route.
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="match-header">
+
+        <h2>Recommended shipments</h2>
+
+        <span class="match-count" id="matchCount">
+            3 compatible shipments
+        </span>
+
+    </div>
+
+
+    <section class="matches" id="matches"></section>
+
+
+    <div class="explanation">
+
+        <div class="explanation-icon">🧠</div>
+
+        <div>
+            <strong>Why this match?</strong>
+
+            <p id="aiExplanation">
+                This shipment closely follows your planned route,
+                fits within your available capacity and matches
+                your delivery timing.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="footer-actions">
+
+        <button class="back-btn" id="backBtn">
+            ← Back to vehicle details
+        </button>
+
+        <button class="continue-btn" id="continueBtn">
+            <span>Continue with shipment</span>
+            <span class="continue-arrow">→</span>
+        </button>
+
+    </div>
+
+</main>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const vehicleData =
+        JSON.parse(
+            localStorage.getItem("lastkmVehicle")
+        ) || {};
+
+    const driverRoute =
+        document.getElementById("driverRoute");
+
+    const driverVehicle =
+        document.getElementById("driverVehicle");
+
+    const driverCapacity =
+        document.getElementById("driverCapacity");
+
+    const matches =
+        document.getElementById("matches");
+
+    const matchCount =
+        document.getElementById("matchCount");
+
+    const aiExplanation =
+        document.getElementById("aiExplanation");
+
+
+    const start =
+        vehicleData.currentLocation ||
+        "Greater Noida";
+
+    const destination =
+        vehicleData.destination ||
+        "Dwarka Sector 21";
+
+    const type =
+        vehicleData.vehicleType ||
+        "Mini Truck";
+
+    const vehicleId =
+        vehicleData.vehicleId ||
+        "LK-104";
+
+    const capacity =
+        Number(vehicleData.availableCapacity) ||
+        12;
+
+
+    driverRoute.textContent =
+        `${start} → ${destination}`;
+
+    driverVehicle.textContent =
+        `${type} · ${vehicleId}`;
+
+    driverCapacity.textContent =
+        `${capacity} kg available`;
+
+
+    const shipments = [
+
+        {
+            id:"SH-204",
+            sender:"Sharma Kirana Store",
+            package:"Small boxes",
+            weight:4,
+            pickup:start,
+            destination:destination,
+
+            distance:"14.6 km",
+            time:"34 min",
+            pickupTime:"12 min",
+            extraDistance:"1.8 km",
+
+            fuelCost:8,
+            earning:55,
+            net:47,
+
+            score:96
+        },
+
+        {
+            id:"SH-318",
+            sender:"Green Basket",
+            package:"Grocery boxes",
+            weight:6,
+            pickup:start,
+            destination:destination,
+
+            distance:"14.6 km",
+            time:"38 min",
+            pickupTime:"20 min",
+            extraDistance:"2.4 km",
+
+            fuelCost:11,
+            earning:72,
+            net:61,
+
+            score:91
+        },
+
+        {
+            id:"SH-427",
+            sender:"Community Care",
+            package:"Packed supplies",
+            weight:3,
+            pickup:start,
+            destination:destination,
+
+            distance:"14.6 km",
+            time:"41 min",
+            pickupTime:"32 min",
+            extraDistance:"3.1 km",
+
+            fuelCost:14,
+            earning:48,
+            net:34,
+
+            score:84
+        },
+
+        {
+            id:"SH-509",
+            sender:"Local Market",
+            package:"Carton boxes",
+            weight:8,
+            pickup:start,
+            destination:destination,
+
+            distance:"14.6 km",
+            time:"46 min",
+            pickupTime:"42 min",
+            extraDistance:"4.2 km",
+
+            fuelCost:19,
+            earning:88,
+            net:69,
+
+            score:76
+        }
+
+    ];
+
+
+    const compatible =
+        shipments
+        .filter(item => item.weight <= capacity)
+        .sort((a,b) => b.score - a.score)
+        .slice(0,3);
+
+
+    matchCount.textContent =
+        `${compatible.length} compatible shipments`;
+
+
+    function escapeHtml(value){
+
+        return String(value)
+            .replace(/&/g,"&amp;")
+            .replace(/</g,"&lt;")
+            .replace(/>/g,"&gt;")
+            .replace(/"/g,"&quot;")
+            .replace(/'/g,"&#039;");
+    }
+
+
+    function render(){
+
+        matches.innerHTML = "";
+
+        compatible.forEach((item,index) => {
+
+            const card =
+                document.createElement("article");
+
+            card.className =
+                "match-card" +
+                (index === 0
+                    ? " best selected"
+                    : "");
+
+            card.dataset.id = item.id;
+
+
+            card.innerHTML = `
+
+                ${
+                    index === 0
+                    ? `<div class="recommended">BEST MATCH</div>`
+                    : ""
+                }
+
+                <div class="vehicle-top">
+
+                    <div class="vehicle-icon">
+                        📦
+                    </div>
+
+                    <div class="score">
+
+                        <span class="score-number">
+                            ${item.score}%
+                        </span>
+
+                        <span class="score-label">
+                            AI MATCH
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <h3 class="vehicle-name">
+                    ${escapeHtml(item.sender)}
+                </h3>
+
+                <p class="vehicle-type">
+                    Shipment ${item.id}
+                </p>
+
+
+                <div class="route">
+
+                    <div class="route-point">
+                        A
+                    </div>
+
+                    <div class="route-name">
+
+                        <strong title="${escapeHtml(item.pickup)}">
+                            ${escapeHtml(item.pickup)}
+                        </strong>
+
+                        <span>Pickup</span>
+
+                    </div>
+
+                    <div class="route-line"></div>
+
+                    <div class="route-point destination">
+                        B
+                    </div>
+
+                    <div class="route-name">
+
+                        <strong title="${escapeHtml(item.destination)}">
+                            ${escapeHtml(item.destination)}
+                        </strong>
+
+                        <span>Drop</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trip-overview">
+
+                    <div class="trip-item">
+
+                        <span>TOTAL DISTANCE</span>
+
+                        <strong>
+                            ${item.distance}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="trip-item">
+
+                        <span>TRIP TIME</span>
+
+                        <strong>
+                            ${item.time}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="trip-item">
+
+                        <span>PICKUP</span>
+
+                        <strong>
+                            ${item.pickupTime}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="metrics">
+
+                    <div class="metric">
+
+                        <span>PACKAGE</span>
+
+                        <strong>
+                            ${escapeHtml(item.package)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>WEIGHT</span>
+
+                        <strong>
+                            ${item.weight} kg
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>EXTRA DISTANCE</span>
+
+                        <strong>
+                            +${item.extraDistance}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric green">
+
+                        <span>EXTRA FUEL COST</span>
+
+                        <strong>
+                            ~₹${item.fuelCost}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="earning">
+
+                    <div class="earning-main">
+
+                        <div class="earning-label">
+
+                            YOUR EARNING
+
+                            <small>
+                                From this shipment
+                            </small>
+
+                        </div>
+
+                        <div class="earning-amount">
+                            ₹${item.earning}
+                        </div>
+
+                    </div>
+
+
+                    <div class="earning-breakdown">
+
+                        <span>
+                            ₹${item.earning} earning − ₹${item.fuelCost} fuel
+                        </span>
+
+                        <span class="net">
+                            NET +₹${item.net}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="score-bar">
+
+                    <div class="score-bar-top">
+
+                        <span>
+                            Compatibility
+                        </span>
+
+                        <span>
+                            ${item.score}%
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            style="width:${item.score}%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button class="select-btn">
+
+                    ${
+                        index === 0
+                        ? "Selected ✓"
+                        : "Select shipment"
+                    }
+
+                </button>
+
+            `;
+
+
+            card
+                .querySelector(".select-btn")
+                .addEventListener(
+                    "click",
+                    () => selectShipment(item.id)
+                );
+
+
+            matches.appendChild(card);
+
+        });
+
+    }
+
+
+    function selectShipment(id){
+
+        document
+            .querySelectorAll(".match-card")
+            .forEach(card => {
+
+                const selected =
+                    card.dataset.id === id;
+
+                card.classList.toggle(
+                    "selected",
+                    selected
+                );
+
+                const button =
+                    card.querySelector(".select-btn");
+
+                button.textContent =
+                    selected
+                    ? "Selected ✓"
+                    : "Select shipment";
+
+            });
+
+
+        const selected =
+            compatible.find(
+                item => item.id === id
+            );
+
+
+        if(!selected) return;
+
+
+        localStorage.setItem(
+            "lastkmDriverShipment",
+            JSON.stringify(selected)
+        );
+
+
+        aiExplanation.textContent =
+            `This ${selected.score}% AI match adds only ${selected.extraDistance} to your trip. You earn ₹${selected.earning}, spend approximately ₹${selected.fuelCost} on the additional fuel, and keep about ₹${selected.net} as net extra earning.`;
+
+    }
+
+
+    render();
+
+
+    if(compatible.length){
+
+        localStorage.setItem(
+            "lastkmDriverShipment",
+            JSON.stringify(compatible[0])
+        );
+
+    }
+
+
+    document
+        .getElementById("continueBtn")
+        .addEventListener("click",() => {
+
+            const selected =
+                localStorage.getItem(
+                    "lastkmDriverShipment"
+                );
+
+            if(!selected){
+
+                alert(
+                    "Please select a shipment first."
+                );
+
+                return;
+            }
+
+            window.location.href =
+                "driver-confirmation.html";
+
+        });
+
+
+    document
+        .getElementById("backBtn")
+        .addEventListener("click",() => {
+
+            window.location.href =
+                "vehicle.html";
+
+        });
+
+
+    document
+        .getElementById("homeBtn")
+        .addEventListener("click",() => {
+
+            window.location.href =
+                "index.html";
+
+        });
+
+});
+
+</script>
+
+</body>
+</html>
