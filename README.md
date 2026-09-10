@@ -8,7 +8,7 @@
 - **Roll Number:** 25SCS1003001246
 - **Program:** B.Tech CSE (AIML)
 - **Semester:** 3rd
-- **Section:** 2CSR10
+- **Section:** 2CSE10
 - **University:** IILM University, Greater Noida, U.P.
 - **Session:** 2025-29
 
